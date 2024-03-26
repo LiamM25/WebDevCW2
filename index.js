@@ -3,6 +3,13 @@ const mustacheExpress = require('mustache-express');
 const path = require('path');
 
 const app = express();
+require('dotenv').config();
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended:false}));
+
+
+app.use(express.urlencoded({ extended: true }));
 
 // Set Mustache as the view engine
 app.engine('mustache', mustacheExpress());

@@ -4,10 +4,18 @@ const userController = require('../controllers/userController.js'); // Import us
 const { login, verify } = require('../authentication/auth.js');
 
 // Authentication Routes
-router.get('/login', userController.showLogin); // Render login page
-router.post('/login', login, userController.handleLogin); // Handle user login
-router.get('/register', userController.showRegisterPage); // Render registration page
-router.post('/register', userController.postNewUser); // Handle user registration
-router.get('/logout', userController.logout); // Handle user logout
+router.get('/login', userController.showLogin); 
+
+router.post("/login", userController.postLogin);
+
+router.get('/register', userController.showRegisterPage); 
+router.post('/register', userController.postNewUser); 
+
+router.get('/home', userController.showHomePage);
+
+router.get('/logout', userController.logout); 
+
+
+
 
 module.exports = router;
