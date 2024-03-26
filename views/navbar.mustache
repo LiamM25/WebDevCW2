@@ -1,47 +1,33 @@
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
     <!-- Container wrapper -->
-    <div class="container-fluid">
-        
-        
-        <!-- Left side -->
-        <div>
-            <!-- Navbar brand -->
-            <a class="navbar-brand mt-2 mt-lg-0" href="/">
-            <p>THE SCOTTISH PANTRY NETWORK</p>
-            </a>
-            </div>
-            <!-- Left side end -->
-        
-        
-            <!-- Right elements -->
-            <div class="d-flex align-items-center">
-            
-            <ul class="navbar-nav">
+    <div class="container">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mx-auto" href="/">
+            <p class="fs-4 fs-md-3 fs-lg-2">THE SCOTTISH PANTRY NETWORK</p>
+        </a>
+
+        <!-- Hamburger menu button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                <a class="nav-link" href="/user/login">Login</a>
+                    <a class="nav-link" href="/user/login">Login</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/user/register">Register</a>
+                    <a class="nav-link" href="/user/register">Register</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/user/register">placeholder</a>          
+                    <a class="nav-link" href="/user/register">Placeholder</a>
                 </li>
             </ul>
-            <!-- Right elements End -->
         </div>
-        
-        
     </div>
-    </nav>
-    <!-- Navbar -->
-
-
-    <!-- Your content goes here -->
-    <div class="container">
-        {{{ body }}} <!-- This will inject the body content -->
-    </div>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+</nav>
+<!-- Navbar -->

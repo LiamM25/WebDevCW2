@@ -35,18 +35,18 @@ exports.showRegisterPage = function (req, res) {
 
 // Method to handle user registration
 exports.postNewUser = function (req, res) {
-    const { username, password } = req.body;
-    // Check if the username already exists
-    userDB.lookup(username, function (err, existingUser) {
+    const { firstName, lastName, email, password } = req.body;
+    // Check if the email already exists
+    userDB.lookup(email, function (err, existingUser) {
         if (err) {
             console.error("Error looking up user:", err);
             res.status(500).send("Internal server error");
         } else if (existingUser) {
-            console.log("User already exists:", username);
+            console.log("User already exists:", email);
             res.status(400).send("User already exists");
         } else {
             // Create new user
-            userDB.create(username, password);
+            userDB.create(firstName, lastName, email, password);
             res.redirect("/pantry/login");
         }
     });

@@ -1,47 +1,42 @@
 
-.navbar-brand > p{
+
+.navbar-brand > p {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 50px;
-    
 }
 
-.navbar-nav {
+
+.navbar-nav .nav-link {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
-  font-size: 30px;
   color: #333;
-
+}
+.navbar {
+  border-bottom: 1px solid #918d8d; 
 }
 
 
 
-.index-content {
-  padding-top: 130px; 
-  padding-right: 100px;
-}
+
 
 .index-content h1 {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 100px; 
-  margin-bottom: 20px; 
 }
+
 
 .index-content p {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 18px; 
-  margin-bottom: 40px; 
-  padding-right: 150px;
 }
+
 
 .index-content .btn {
   font-family: 'Montserrat', sans-serif;
-  font-size: 40px; 
+  font-size: 2rem; 
 }
 
 .index-content .btn-social-icon {
-  font-size: 20px; 
-  margin-right: 10px; 
+  font-size: 1rem; 
+  margin-right: 0.5rem; 
+}
+
+.img-fluid {
+  max-width: 100%;
 }

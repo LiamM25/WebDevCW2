@@ -1,30 +1,27 @@
 {{> header }}
 {{> navbar}}
 
-<!--section to hold image -->
-<div class="row no-gutters">
-    <div class="col-12 col-sm-6 col-md-7">
-    <img src="/images/TSPN_logo enhanced.png" alt="TSPN Logo" style="width: 75%;">
-</div>
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-auto"></div>
 
-<!--section to hold info-->
-<div class="col-4 col-md-4">
+        <div class="col-md-auto">
+            <!-- Column for the logo image -->
+            <div class="d-flex justify-content-center">
+                <img src="/images/TSPN_logo enhanced.png" alt="TSPN Logo" class="img-fluid">
+            </div>
+        </div>
 
-    <div class="index-content">
-    
-    <h1>Scottish Pantry Network</h1>
-    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard daker including versions of Lorem Ipsum..</p>
-    <a href="#" class="btn btn-primary">Sign Up</a>
-    
+        <div class="col-md-auto my-5">
+            <div class="index-content">
+                <h1 class="text-center">Scottish Pantry Network</h1>
+                <p class="text-center mx-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard daker including versions of Lorem Ipsum..</p>
+                <div class="text-center">
+                    <a href="/user/register" class="btn btn-primary btn-lg">Sign Up</a>
+                </div>
+            </div>
+        </div>
 
-    <div>
-        <!-- Social Media Links -->
-        <a href="#" class="btn btn-social-icon btn-facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="btn btn-social-icon btn-twitter"><i class="fab fa-twitter"></i></a>     
+        <div class="col-md-auto"></div>
     </div>
-
-    </div>
-
 </div>
-
-{{> footer }}

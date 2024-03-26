@@ -5,34 +5,16 @@ const saltRounds = 10;
 class UserDAO {
     constructor(dbFilePath) {
         if (dbFilePath) {
-            //embedded
             this.db = new Datastore({ filename: dbFilePath, autoload: true });
         } else {
-            //in memory
             this.db = new Datastore();
         }
     }
 
-    init() {
-        // Demo user data initialization
-        const demoUsers = [
-            { user: 'Peter', password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C' },
-            { user: 'Ann', password: '$2b$10$bnEYkqZM.MhEF/LycycymOeVwkQONq8kuAUGx6G5tF9UtUcaYDs3S' }
-        ];
-
-        this.db.insert(demoUsers, (err) => {
-            if (err) {
-                console.error('Error initializing demo users:', err);
-            } else {
-                console.log('Demo users initialized successfully.');
-            }
-        });
-    }
-
-    async create(username, password) {
+    async create(firstName, lastName, email, password, role = 'user') {
         try {
             const hash = await bcrypt.hash(password, saltRounds);
-            const entry = { user: username, password: hash };
+            const entry = { firstName: firstName, lastName: lastName, email: email, password: hash, role: role };
             await this.db.insert(entry);
         } catch (err) {
             console.error("Error creating user:", err);
@@ -50,5 +32,5 @@ class UserDAO {
     }
 }
 
-// Export the UserDAO class itself
+
 module.exports = UserDAO;
