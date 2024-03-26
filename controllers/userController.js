@@ -19,7 +19,6 @@ exports.handleLogin = function (req, res) {
             console.error("Authentication failed:", err || "Invalid username or password");
             res.status(401).send("Invalid username or password");
         } else {
-            // Authentication successful
             // Set JWT token
             const accessToken = jwt.sign({ username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
             res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600000 }); // expires in 1 hour
@@ -33,27 +32,47 @@ exports.showRegisterPage = function (req, res) {
     res.render("user/register");
 };
 
-// Method to handle user registration
+// Method to handle registration 
 exports.postNewUser = function (req, res) {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+    // Check if any field is empty
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+        return res.status(400).send("All fields are required");
+    }
+
+    // Check if the passwords match
+    if (password !== confirmPassword) {
+        return res.status(400).send("Passwords do not match");
+    }
+
     // Check if the email already exists
     userDB.lookup(email, function (err, existingUser) {
         if (err) {
             console.error("Error looking up user:", err);
-            res.status(500).send("Internal server error");
-        } else if (existingUser) {
+            return res.status(500).send("Internal server error");
+        } 
+        if (existingUser) {
             console.log("User already exists:", email);
-            res.status(400).send("User already exists");
-        } else {
-            // Create new user
-            userDB.create(firstName, lastName, email, password);
-            res.redirect("/pantry/login");
+            return res.status(400).send("User already exists");
         }
+
+        // Hash the password
+        bcrypt.hash(password, saltRounds, function(err, hash) {
+            if (err) {
+                console.error("Error hashing password:", err);
+                return res.status(500).send("Internal server error");
+            }
+            
+            // Create new user
+            userDB.create(email, hash, firstName, lastName);
+            res.redirect("/login");
+        });
     });
-};
+}
 
 // Method to handle user logout
 exports.logout = function (req, res) {
     // Clear JWT token by clearing cookie
-    res.clearCookie("jwt").redirect("/pantry/login");
+    res.clearCookie("jwt").redirect("/");
 };

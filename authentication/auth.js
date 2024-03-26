@@ -3,16 +3,16 @@ const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 
 exports.login = function (req, res, next) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  userModel.lookup(username, function (err, user) {
+  userModel.lookup(email, function (err, user) {
     if (err) {
       console.error("Error looking up user:", err);
       return res.status(500).send("Internal server error");
     }
 
     if (!user) {
-      console.log("User", username, "not found");
+      console.log("User", email, "not found");
       return res.status(401).render("user/register");
     }
 
@@ -25,7 +25,7 @@ exports.login = function (req, res, next) {
 
       if (result) {
         // Passwords match, generate access token
-        const payload = { username: username };
+        const payload = { email: email };
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
 
         // Set access token as a cookie
@@ -35,7 +35,7 @@ exports.login = function (req, res, next) {
         next();
       } else {
         // Passwords don't match
-        console.log("Incorrect password for user", username);
+        console.log("Incorrect password for user", email);
         return res.status(403).render("user/login");
       }
     });

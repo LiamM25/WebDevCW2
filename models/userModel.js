@@ -11,6 +11,21 @@ class UserDAO {
         }
     }
 
+
+    init() {
+        this.db.insert({
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'johndoe8@email.com',
+            password:
+            '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C'
+        });
+    
+        return this;
+    }
+
+
+
     async create(firstName, lastName, email, password, role = 'user') {
         try {
             const hash = await bcrypt.hash(password, saltRounds);

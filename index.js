@@ -1,6 +1,6 @@
 const express = require('express');
 const mustacheExpress = require('mustache-express');
-const path = require('path'); // Import path module
+const path = require('path');
 
 const app = express();
 
