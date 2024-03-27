@@ -19,43 +19,45 @@ class UserDAO {
             password:
             '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C'
         });
-        console.log("User database initialized.");
+        console.log("User database initialised.");
         return this;
     }
 
-    async create(firstName, lastName, email, password, role = 'user') {
-        try {
-            const hash = await bcrypt.hash(password, saltRounds);
-            const normalisedEmail = email.toLowerCase(); 
-            
-            // Check if the email already exists
-            const existingUser = await this.lookup(normalisedEmail);
-            if (existingUser) {
-                console.log("User already exists:", normalisedEmail);
-                return null; // Return null to indicate duplicate email
-            }
-            
-            const entry = { firstName: firstName, lastName: lastName, email: normalisedEmail, password: hash, role: role };
-            await this.db.insert(entry);
-            return entry; // Return the inserted entry
-        } catch (err) {
-            console.error("Error creating user:", err);
-            return null; // Return null to indicate an error
-        }
-    }
-
-    lookup(email) {
-        return new Promise((resolve, reject) => {
-            this.db.findOne({ email: email }, (err, user) => {
+    create(firstName, lastName, email, password, role, cb) {
+        const that = this;
+        bcrypt.hash(password, saltRounds).then(function(hash) {
+            var entry = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hash,
+                role: role || 'user'
+            };
+            that.db.insert(entry, function (err) {
                 if (err) {
-                    console.error("Error looking up user:", err);
-                    reject(err);
-                } else {
-                    resolve(user);
+                    console.log("Can't insert user:", email);
+                    cb(err);
+                    return;
                 }
+                cb(null);
             });
         });
     }
-}
 
-module.exports = UserDAO;
+    lookup(email, cb) {
+        this.db.find({ 'email': email }, (err, entries) => {
+            if (err) {
+                return cb(err, null);
+            } else {
+                if (entries.length === 0) {
+                    return cb(null, null);
+                } else {
+                    return cb(null, entries[0]);
+                }
+            }
+        });
+    }
+}
+const dao = new UserDAO();
+dao.init();
+module.exports = dao;
