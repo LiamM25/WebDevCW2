@@ -39,7 +39,8 @@ exports.login = function (req, res, next) {
       const payload = { 
         email: user.email,
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        role: user.role
       };
 
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
@@ -49,6 +50,9 @@ exports.login = function (req, res, next) {
 
       console.log("JWT token generated for user:", email);
 
+      // Add user role to the req object
+      req.userRole = user.role;
+      
       // Proceed to the next middleware
       next();
     });
@@ -67,10 +71,16 @@ exports.verify = function (req, res, next) {
   let payload;
   try {
     payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-    req.user = payload; // Set req.user to the decoded payload
-    next(); // Proceed to the next middleware with authentication
+    req.user = payload; 
+    console.log("Verification complete");
+    next(); 
   } catch (e) {
     console.error("Error verifying access token:", e.message);
     return res.status(401).send("Invalid access token");
   }
+};
+
+exports.clearCookies = function (res) {
+  console.log("Clearing cookies");
+  res.clearCookie("jwt").status(200);
 };

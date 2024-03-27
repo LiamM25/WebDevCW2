@@ -9,9 +9,13 @@ router.post("/login", userController.postLogin);
 router.get('/register', userController.showRegisterPage); 
 router.post('/register', userController.postNewUser); 
 
-// Apply verify middleware to protect home and logout routes
+
 router.get('/home', verify, userController.showHomePage);
-router.get('/logout', verify, userController.logout); 
+router.get('/logout', userController.logout); 
+
+
+// Define separate routes for different user roles
+router.get('/admin/adminHome', verify, userController.showAdminDash); 
 
 module.exports = router;
 

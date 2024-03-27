@@ -12,13 +12,28 @@ class UserDAO {
     }
 
     init() {
+        //user
         this.db.insert({
             firstName: 'John',
             lastName: 'Doe',
             email: 'johndoe8@email.com',
-            password:
-            '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C'
+            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            role: 'user'
         });
+
+        //admin
+        this.db.insert({
+            firstName: 'Admin',
+            lastName: 'Admin',
+            email: 'admin@email.com',
+            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            role: 'admin'
+        });
+
+
+
+
+
         console.log("User database initialised.");
         return this;
     }

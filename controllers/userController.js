@@ -1,6 +1,4 @@
 const UserDAO = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const auth = require("../authentication/auth.js");
 
 
@@ -20,6 +18,12 @@ exports.showHomePage = function(req, res) {
     res.render("user/home", { user: user });
 };
 
+// Method to render the admin dashboard
+exports.showAdminDash = function(req, res) {
+    const user = req.user;
+    res.render("admin/adminHome", { user: user });
+};
+
 
 // Method to handle user login
 exports.postLogin = function (req, res) {
@@ -31,10 +35,21 @@ exports.postLogin = function (req, res) {
             return res.status(500).send("Internal server error");
         }
 
-        // Redirect to the home page
-        res.redirect("/user/home");
+        // Redirect to the appropriate route based on user's role
+        const userRole = req.userRole; // Access user's role from req object
+        if (userRole === 'user') {
+            res.redirect("/user/home");
+        } else if (userRole === 'pantry') {
+            res.redirect("/pantry/home");
+        } else if (userRole === 'admin') {
+            res.redirect("/admin/adminHome");
+        } else {
+            // Handle unknown role
+            res.status(403).send("Unknown role");
+        }
     });
 };
+
 
 // Method to handle registration 
 exports.postNewUser = function (req, res) {
@@ -66,7 +81,10 @@ exports.postNewUser = function (req, res) {
 
 // Method to handle user logout
 exports.logout = function (_req, res) {
-    // Clear JWT token by clearing cookie
-    res.clearCookie("jwt").redirect("/");
+    // Call clearCookies method from auth module to clear cookies
+    auth.clearCookies(res);
+
+    // Redirect the user to the homepage or login page
+    res.redirect("/");
 };
 
