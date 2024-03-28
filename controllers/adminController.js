@@ -27,7 +27,15 @@ exports.showAdminHome = function(req, res) {
 exports.showAdminInv = function(req, res) {
     const user = req.user;
     
-    InvDAO.getAllInventory((err, items) => {
+    // Extract filter options from the request query
+    const filterOptions = {
+        pantryLocation: req.query.pantryLocation || null,
+        itemType: req.query.itemType || null,
+        confirmed: req.query.confirmed || null
+    };
+    
+    // Call the getAllInventory method with the filter options
+    InvDAO.getAllInventory(filterOptions, (err, items) => {
         if (err) {
             console.error("Error fetching inventory:", err);
             // Handle error

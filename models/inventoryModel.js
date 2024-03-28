@@ -61,9 +61,23 @@ class invDAO {
         });
     }
 
-    getAllInventory(cb) {
-        console.log("Fetching all inventory items...");
-        this.db.find({}, (err, items) => {
+    getAllInventory(filterOptions, cb) {
+        console.log("Fetching inventory items with filter options:", filterOptions);
+        
+        // Construct the query object based on filter options
+        const query = {};
+        if (filterOptions.pantryLocation) {
+            query.pantryLocation = filterOptions.pantryLocation;
+        }
+        if (filterOptions.itemType) {
+            query.itemType = filterOptions.itemType;
+        }
+        if (filterOptions.confirmed) {
+            query.confirmed = filterOptions.confirmed;
+        }
+    
+        // Execute the query with the constructed filter
+        this.db.find(query, (err, items) => {
             if (err) {
                 console.error("Error fetching inventory:", err);
                 cb(err, null);

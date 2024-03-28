@@ -3,6 +3,29 @@
 
 <h1>Inventory</h1>
 
+<!-- Filter controls -->
+<div>
+  <label for="pantryLocationFilter">Pantry Location:</label>
+  <select id="pantryLocationFilter" onchange="filterInventory()">
+    <option value="">All</option>
+    <option value="Pantry1">Pantry 1</option>
+    <option value="Pantry2">Pantry 2</option>
+    <!-- Add more options for other pantries -->
+  </select>
+</div>
+
+<div>
+  <label for="itemTypeFilter">Item Type:</label>
+  <select id="itemTypeFilter" onchange="filterInventory()">
+    <option value="">All</option>
+    <option value="Fruit/Veg">Fruit/Veg</option>
+    <option value="Canned Goods">Canned Goods</option>
+    <!-- Add more options for other item types -->
+  </select>
+</div>
+
+<!-- Add similar filter controls for other columns -->
+
 <table>
   <thead>
     <tr>
@@ -38,3 +61,28 @@
     {{/inventory}}
   </tbody>
 </table>
+
+<script>
+  // JavaScript function to filter inventory
+  function filterInventory() {
+    // Get selected filter options
+    const pantryLocation = document.getElementById("pantryLocationFilter").value;
+    const itemType = document.getElementById("itemTypeFilter").value;
+    // Get other filter options similarly for other columns
+
+    // Construct URL with filter options
+    const queryParams = new URLSearchParams();
+    if (pantryLocation) {
+      queryParams.append('pantryLocation', pantryLocation);
+    }
+    if (itemType) {
+      queryParams.append('itemType', itemType);
+    }
+    // Append other filter options to queryParams similarly for other columns
+
+    const url = '/admin/adminInventory?' + queryParams.toString();
+
+    // Redirect to filtered inventory page
+    window.location.href = url;
+  }
+</script>
