@@ -9,13 +9,17 @@ router.post("/login", userController.postLogin);
 router.get('/register', userController.showRegisterPage); 
 router.post('/register', userController.postNewUser); 
 
-
+// Define separate routes for different user roles
+//User home
 router.get('/home', verify, userController.showHomePage);
+
+//Pantry home
+router.get('/pantryHome', verify, userController.showPantryHome); 
+
+
 router.get('/logout', userController.logout); 
 
 
-// Define separate routes for different user roles
-router.get('/admin/adminHome', verify, userController.showAdminDash); 
 
 module.exports = router;
 

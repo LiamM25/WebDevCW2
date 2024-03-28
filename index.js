@@ -5,14 +5,13 @@ const app = express();
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:false}));
 
-
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cookieParser());
 
 // Set Mustache as the view engine
 app.engine('mustache', mustacheExpress());
@@ -31,6 +30,17 @@ app.get('/', (req, res) => {
 // Define user-related routes
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', userRoutes);
+
+// Define admin-related routes
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/admin', adminRoutes);
+
+// Placeholder for pantry worker related routes
+const pantryRoutes = require('./routes/userRoutes'); // Placeholder for pantry routes
+app.use('/pantry', pantryRoutes);
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;

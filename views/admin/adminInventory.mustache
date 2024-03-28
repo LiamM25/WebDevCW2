@@ -1,0 +1,129 @@
+{{> header }}
+{{> admin/adminNav}}
+
+<h1>Inventory</h1>
+
+<!-- Dropdown menu for filtering by pantry -->
+<select id="pantryFilter">
+    <option value="">All Pantries</option>
+    <option value="Pantry1">Pantry 1</option>
+    <option value="Pantry2">Pantry 2</option>
+    <!-- Add more options for other pantries -->
+</select>
+
+<!-- Dropdown menu for filtering by item type -->
+<select id="itemTypeFilter">
+    <option value="">All Item Types</option>
+    <option value="Fruit/Veg">Fruit/Veg</option>
+    <option value="Canned Goods">Canned Goods</option>
+    <!-- Add more options for other item types -->
+</select>
+
+<!-- Dropdown menu for filtering by confirmed status -->
+<select id="confirmedFilter">
+    <option value="">All</option>
+    <option value="Yes">Confirmed</option>
+    <option value="No">Unconfirmed</option>
+</select>
+
+<table id="inventoryTable">
+    <thead>
+        <tr>
+            <th>Pantry Location</th>
+            <th>Item Type</th>
+            <th>Item Name</th>
+            <th>Item Quantity</th>
+            <th>Weight</th>
+            <th>Expiration Date</th>
+            <th>Harvest Date</th>
+            <th>Confirmed</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="inventoryItems">
+        <!-- Inventory items will be populated here -->
+    </tbody>
+</table>
+
+<script>
+    // Add change event listeners to dropdown menus
+    document.getElementById('pantryFilter').addEventListener('change', function() {
+        const selectedPantry = this.value;
+        filterInventory(selectedPantry);
+    });
+
+    document.getElementById('itemTypeFilter').addEventListener('change', function() {
+        const selectedItemType = this.value;
+        filterInventory(null, selectedItemType);
+    });
+
+    document.getElementById('confirmedFilter').addEventListener('change', function() {
+        const confirmedStatus = this.value;
+        filterInventory(null, null, confirmedStatus);
+    });
+
+    // Function to filter inventory based on selected criteria
+    function filterInventory(selectedPantry, selectedItemType, confirmedStatus) {
+        // Send AJAX request to server with filter criteria
+        const queryParams = new URLSearchParams();
+        if (selectedPantry) {
+            queryParams.append('pantry', selectedPantry);
+        }
+        if (selectedItemType) {
+            queryParams.append('itemType', selectedItemType);
+        }
+        if (confirmedStatus) {
+            queryParams.append('confirmed', confirmedStatus);
+        }
+        const url = '/admin/adminInventory?' + queryParams.toString();
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Update the inventory display based on the response
+                updateInventoryDisplay(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Function to update the inventory display
+    function updateInventoryDisplay(data) {
+        // Clear existing inventory items
+        document.getElementById('inventoryItems').innerHTML = '';
+
+        // Populate the inventory display with the received data
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.pantryLocation}</td>
+                <td>${item.itemType}</td>
+                <td>${item.itemName}</td>
+                <td>${item.itemQuantity}</td>
+                <td>${item.Weight}</td>
+                <td>${item.ExpirationDate}</td>
+                <td>${item.HarvestDate}</td>
+                <td>${item.confirmed}</td>
+                <td><button onclick="deleteItem('${item._id}')">Delete</button></td>
+            `;
+            document.getElementById('inventoryItems').appendChild(row);
+        });
+    }
+
+    // Function to handle item deletion
+    function deleteItem(itemId) {
+        // Send AJAX request to delete item
+        fetch(`/admin/adminInventory/${itemId}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    // Refresh inventory display after deletion
+                    filterInventory();
+                } else {
+                    console.error('Failed to delete item:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>

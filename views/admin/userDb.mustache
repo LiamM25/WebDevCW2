@@ -1,0 +1,31 @@
+{{> header }}
+{{> admin/adminNav}}
+<h1>User Database</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Action</th> 
+    </tr>
+  </thead>
+  <tbody>
+    {{#users}}
+    <tr>
+      <td>{{firstName}}</td>
+      <td>{{lastName}}</td>
+      <td>{{email}}</td>
+      <td>{{role}}</td>
+      <td>
+        <form action="/admin/deleteUser" method="POST">
+          <input type="hidden" name="userId" value="{{_id}}">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{/users}}
+  </tbody>
+</table>

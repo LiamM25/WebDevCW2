@@ -30,8 +30,14 @@ class UserDAO {
             role: 'admin'
         });
 
-
-
+         //admin
+         this.db.insert({
+            firstName: 'Pantry1',
+            lastName: 'Admin',
+            email: 'pantry@email.com',
+            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            role: 'pantry'
+        });
 
 
         console.log("User database initialised.");
@@ -69,6 +75,29 @@ class UserDAO {
                 } else {
                     return cb(null, entries[0]);
                 }
+            }
+        });
+    }
+
+    //Admin related 
+    // Method to retrieve all users
+    getAllUsers(cb) {
+        this.db.find({}, (err, users) => {
+            if (err) {
+                return cb(err, null);
+            } else {
+                return cb(null, users);
+            }
+        });
+    }
+
+    deleteUser(userId, cb) {
+        this.db.remove({ _id: userId }, {}, (err, numRemoved) => {
+            if (err) {
+                return cb(err);
+            } else {
+                console.log(`Deleted ${numRemoved} user(s)`);
+                return cb(null);
             }
         });
     }

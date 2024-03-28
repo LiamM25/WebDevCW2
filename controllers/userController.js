@@ -18,11 +18,13 @@ exports.showHomePage = function(req, res) {
     res.render("user/home", { user: user });
 };
 
-// Method to render the admin dashboard
-exports.showAdminDash = function(req, res) {
+
+// Method to render the pantry home
+exports.showPantryHome = function(req, res) {
     const user = req.user;
-    res.render("admin/adminHome", { user: user });
+    res.render("pantry/pantryHome", { user: user });
 };
+
 
 
 // Method to handle user login
@@ -34,13 +36,15 @@ exports.postLogin = function (req, res) {
             console.error("Error logging in:", err);
             return res.status(500).send("Internal server error");
         }
+        
 
         // Redirect to the appropriate route based on user's role
         const userRole = req.userRole; // Access user's role from req object
+        console.log("User Role:", userRole);
         if (userRole === 'user') {
             res.redirect("/user/home");
         } else if (userRole === 'pantry') {
-            res.redirect("/pantry/home");
+            res.redirect("/pantry/pantryHome");
         } else if (userRole === 'admin') {
             res.redirect("/admin/adminHome");
         } else {
