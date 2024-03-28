@@ -6,6 +6,7 @@ const e = require("express");
 
 // Method to render the user db page
 exports.showUserDbPage = function(req, res) {
+    const user = req.user;
     
     UserDAO.getAllUsers((err, users) => {
         if (err) {
@@ -31,7 +32,7 @@ exports.showAdminInv = function(req, res) {
     const filterOptions = {
         pantryLocation: req.query.pantryLocation || null,
         itemType: req.query.itemType || null,
-        confirmed: req.query.confirmed || null
+        confirmed: req.query.confirmed || null,
     };
     
     // Call the getAllInventory method with the filter options

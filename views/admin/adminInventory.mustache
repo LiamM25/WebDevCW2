@@ -2,6 +2,8 @@
 {{> admin/adminNav}}
 
 <h1>Inventory</h1>
+<!-- Button to reset filters -->
+<button onclick="resetFilters()">Reset Filters</button>
 
 <!-- Filter controls -->
 <div>
@@ -10,7 +12,7 @@
     <option value="">All</option>
     <option value="Pantry1">Pantry 1</option>
     <option value="Pantry2">Pantry 2</option>
-    <!-- Add more options for other pantries -->
+    
   </select>
 </div>
 
@@ -20,11 +22,25 @@
     <option value="">All</option>
     <option value="Fruit/Veg">Fruit/Veg</option>
     <option value="Canned Goods">Canned Goods</option>
-    <!-- Add more options for other item types -->
+    <option value="Meat/Poultry">Meat/Poultry</option>
+    <option value="Fish">Fish</option>
+    <option value="Grains">Grains</option>
+    <option value="Milk Products">Milk Products</option>
+    <option value="Other">Other</option>
+    </select>
+</div>
+
+<div>
+  <label for="confirmedOrderFilter">Confirmed Inventory:</label>
+  <select id="confirmedOrderFilter" onchange="filterInventory()">
+    <option value="">All</option>
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+    
   </select>
 </div>
 
-<!-- Add similar filter controls for other columns -->
+
 
 <table>
   <thead>
@@ -37,7 +53,7 @@
       <th>Expiration Date</th>
       <th>Harvest Date</th>
       <th>Confirmed</th>
-      <th>Action</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -68,6 +84,7 @@
     // Get selected filter options
     const pantryLocation = document.getElementById("pantryLocationFilter").value;
     const itemType = document.getElementById("itemTypeFilter").value;
+    const confirmed = document.getElementById("confirmedOrderFilter").value;
     // Get other filter options similarly for other columns
 
     // Construct URL with filter options
@@ -78,11 +95,29 @@
     if (itemType) {
       queryParams.append('itemType', itemType);
     }
-    // Append other filter options to queryParams similarly for other columns
+    if (confirmed) {
+      queryParams.append('confirmed', confirmed);
+    }
+    
+    
 
     const url = '/admin/adminInventory?' + queryParams.toString();
 
     // Redirect to filtered inventory page
     window.location.href = url;
+
+
+    // JavaScript function to reset filters
+    function resetFilters() {
+    // Reset all filter controls to default values
+    document.getElementById("pantryLocationFilter").value = "";
+    document.getElementById("itemTypeFilter").value = "";
+    document.getElementById("confirmedOrderFilter").value = "";
+
+    // Redirect to display full database
+    location.reload();
+  }
+
+
   }
 </script>
