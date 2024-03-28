@@ -61,14 +61,37 @@ class invDAO {
         });
     }
 
-    getAllInventory(filterOptions, cb) {
-        
-        this.db.find(filterOptions, (err, items) => {
+    getAllInventory(cb) {
+        console.log("Fetching all inventory items...");
+        this.db.find({}, (err, items) => {
             if (err) {
                 console.error("Error fetching inventory:", err);
                 cb(err, null);
             } else {
+                console.log("Successfully fetched inventory:", items);
                 cb(null, items);
+            }
+        });
+    }
+
+    deleteInventoryItem(itemId, cb) {
+        this.db.remove({ _id: itemId }, {}, (err, numRemoved) => {
+            if (err) {
+                return cb(err);
+            } else {
+                console.log(`Deleted ${numRemoved} item(s)`);
+                return cb(null);
+            }
+        });
+    }
+
+    deleteUser(userId, cb) {
+        this.db.remove({ _id: userId }, {}, (err, numRemoved) => {
+            if (err) {
+                return cb(err);
+            } else {
+                console.log(`Deleted ${numRemoved} user(s)`);
+                return cb(null);
             }
         });
     }

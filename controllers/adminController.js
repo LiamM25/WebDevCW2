@@ -1,6 +1,7 @@
 const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
+const e = require("express");
 
 
 // Method to render the user db page
@@ -26,22 +27,15 @@ exports.showAdminHome = function(req, res) {
 exports.showAdminInv = function(req, res) {
     const user = req.user;
     
-    // Extract filter options from request query
-    const filterOptions = {
-        pantryLocation: req.query.pantry || null,
-        itemType: req.query.itemType || null,
-        confirmed: req.query.confirmed || null
-    };
-
-    // Call InvDAO method to fetch inventory data with filters
-    InvDAO.getAllInventory(filterOptions, (err, inventory) => {
+    InvDAO.getAllInventory((err, items) => {
         if (err) {
             console.error("Error fetching inventory:", err);
             // Handle error
             res.status(500).send("Error fetching inventory");
         } else {
-            // Render admin inventory page with inventory data
-            res.render("admin/adminInventory", { user: user, inventory: inventory });
+            console.log("Successfully fetched inventory:", items);
+            // Render the adminInventory page with inventory data
+            res.render("admin/adminInventory", { user: user, inventory: items });
         }
     });
 };
@@ -68,5 +62,22 @@ exports.deleteUser = function(req, res) {
         }
         // Redirect back to the user database page after deletion
         res.redirect("/admin/userDb");
+    });
+};
+
+exports.deleteInvItem = function(req, res) {
+    const itemId = req.body.itemId; // Retrieve item ID from the request body
+
+    // Call the deleteInventoryItem method from InvDAO to delete the item
+    InvDAO.deleteInventoryItem(itemId, (err) => {
+        if (err) {
+            console.error("Error deleting inventory item:", err);
+            // Handle error response
+            res.status(500).send("Error deleting inventory item");
+            return;
+        }
+        console.log("Successfully deleted inventory item:", itemId);
+        // Redirect back to the admin inventory page after deletion
+        res.redirect("/admin/adminInventory");
     });
 };

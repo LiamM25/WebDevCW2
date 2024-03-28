@@ -17,4 +17,7 @@ router.get('/adminInventory', verify, adminController.showAdminInv);
 // Delete user
 router.post('/deleteUser', verify, adminController.deleteUser);
 
+// Delete inv item
+router.post('/deleteInvItem', verify, adminController.deleteInvItem);
+
 module.exports = router;
