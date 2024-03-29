@@ -101,6 +101,23 @@ class UserDAO {
             }
         });
     }
+
+    getNameById(userId, cb) {
+        this.db.findOne({ _id: userId }, (err, user) => {
+            if (err) {
+                console.error("Error fetching user:", err);
+                cb(err, null);
+            } else {
+                console.log("Successfully fetched user:", user);
+                if (user) {
+                    const fullName = `${user.firstName} ${user.lastName}`;
+                    cb(null, fullName);
+                } else {
+                    cb(new Error("User not found"), null);
+                }
+            }
+        });
+    }
 }
 const dao = new UserDAO();
 dao.init();

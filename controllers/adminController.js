@@ -2,6 +2,7 @@ const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
 const e = require("express");
+const async = require('async');
 
 
 // Method to render the user db page
@@ -16,7 +17,7 @@ exports.showUserDbPage = function(req, res) {
             return;
         }
         // Render the user database page with the list of users
-        res.render("admin/userDb", { users: users });
+        res.render("admin/userDb", { users: users, user: user });
     });
 };
 
@@ -43,8 +44,28 @@ exports.showAdminInv = function(req, res) {
             res.status(500).send("Error fetching inventory");
         } else {
             console.log("Successfully fetched inventory:", items);
-            // Render the adminInventory page with inventory data
-            res.render("admin/adminInventory", { user: user, inventory: items });
+
+            // Iterate through each inventory item and fetch the donator's name
+            async.each(items, (item, callback) => {
+                // Fetch the donator's name using getNameById method
+                UserDAO.getNameById(item.userId, (nameErr, donatorName) => {
+                    if (nameErr) {
+                        console.error("Error fetching donator name:", nameErr);
+                        // Handle error
+                        item.donatorName = "Unknown"; // Set a default value
+                    } else {
+                        item.donatorName = donatorName; // Assign the donator's name
+                    }
+                    callback(); // Move to the next item
+                });
+            }, (asyncErr) => {
+                if (asyncErr) {
+                    console.error("Error fetching donator name:", asyncErr);
+                }
+
+                // Render the adminInventory page with inventory data
+                res.render("admin/adminInventory", { user: user, inventory: items });
+            });
         }
     });
 };

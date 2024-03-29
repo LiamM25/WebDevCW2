@@ -53,7 +53,8 @@
       <th>Expiration Date</th>
       <th>Harvest Date</th>
       <th>Confirmed</th>
-      <th></th>
+      <th>Donator Name</th> <!-- New column for donator's name -->
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -67,6 +68,7 @@
       <td>{{ExpirationDate}}</td>
       <td>{{HarvestDate}}</td>
       <td>{{confirmed}}</td>
+      <td>{{donator.name}}</td> <!-- Display donator's name -->
       <td>
         <form action="/admin/deleteInvItem" method="POST">
             <input type="hidden" name="itemId" value="{{_id}}">

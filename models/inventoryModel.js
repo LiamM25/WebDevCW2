@@ -38,16 +38,17 @@ class invDAO {
     }
 
 
-    createItem(itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, cb) {
+    createItem(userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, cb) {
         const entry = {
-            pantryLocation: pantryLocation, //to indicate which pantry it will be located
+            userId: userId, 
+            pantryLocation: pantryLocation,
             itemType: itemType,
             itemName: itemName,
             itemQuantity: itemQuantity,
-            Weight: weight || '', // Default to empty string if not provided
-            ExpirationDate: expirationDate || '', // Default to empty string if not provided
-            HarvestDate: harvestDate || '', // Default to empty string if not provided
-            confirmed: confirmed || 'No' //donations will be confirmed by pantry upon arrival
+            Weight: weight || '', 
+            ExpirationDate: expirationDate || '', 
+            HarvestDate: harvestDate || '', 
+            confirmed: confirmed || 'No' //donations will be confirmed upon arrival by the pantry
         };
     
         this.db.insert(entry, function(err, newDoc) {
