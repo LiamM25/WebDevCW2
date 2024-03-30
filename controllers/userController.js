@@ -2,6 +2,16 @@ const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
 
+exports.checkUserSession = function(req, res, next) {
+    const user = req.user;
+    if (user) {
+        next(); 
+    } else {
+        console.error("User session expired or invalid");
+        res.redirect('/');
+    }
+};
+
 
 // Method to render the home page
 exports.showHomePage = function(req, res) {
@@ -20,37 +30,22 @@ exports.logout = function (_req, res) {
 
 exports.renderUserDonatePage = function(req, res) {
     const user = req.user;
-    if (user) {
     res.render("user/userDonate", { user: user });
-}else {
-    // Handle the case where user object is null or pantryName property is missing
-    console.error("User session expired or invalid");
-    res.redirect('/');
-}
+    
 };
 
 
 exports.newDonation = function(req, res){
     const user = req.user;
+    const { pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed } = req.body;
 
-    if (user) {
-    const { userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed } = req.body;
-
-    InvDAO.createItem(userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, (err, newDonation) => {
+    InvDAO.createItem(user.userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, (err, newDonation) => {
         if (err) {
             console.error("Error creating donation:", err);
-            // Handle error
             res.status(500).send("Error creating donation");
         } else {
             console.log("New donation created:", newDonation);
-            // Redirect to a success page or render a success message
-            res.status(200).send("Donation created successfully");
+            res.render("user/userDonate", { user: user });
         }
     });
-    }else {
-        // Handle the case where user object is null or pantryName property is missing
-        console.error("User session expired or invalid");
-        res.redirect('/');
-    }
-
 }

@@ -1,8 +1,17 @@
 const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
-const e = require("express");
 const async = require('async');
+
+exports.checkUserSession = function(req, res, next) {
+    const user = req.user;
+    if (user) {
+        next(); 
+    } else {
+        console.error("User session expired or invalid");
+        res.redirect('/');
+    }
+};
 
 
 // Method to render the user db page
@@ -31,49 +40,57 @@ exports.showAdminHome = function(req, res) {
     res.render("admin/adminHome", { user: user });
 };
 
-exports.showAdminInv = function(req, res) {
-    const user = req.user;
-    
-    // Extract filter options from the request query
-    const filterOptions = {
-        pantryLocation: req.query.pantryLocation || null,
-        itemType: req.query.itemType || null,
-        confirmed: req.query.confirmed || null,
-    };
-    
-    // Call the getAllInventory method with the filter options
-    InvDAO.getAllInventory(filterOptions, (err, items) => {
-        if (err) {
-            console.error("Error fetching inventory:", err);
-            // Handle error
-            res.status(500).send("Error fetching inventory");
-        } else {
-            console.log("Successfully fetched inventory:", items);
-
-            // Iterate through each inventory item and fetch the donator's name
-            async.each(items, (item, callback) => {
-                // Fetch the donator's name using getNameById method
-                UserDAO.getNameById(item.userId, (nameErr, donatorName) => {
-                    if (nameErr) {
-                        console.error("Error fetching donator name:", nameErr);
-                        // Handle error
-                        item.donatorName = "Unknown"; // Set a default value
-                    } else {
-                        item.donatorName = donatorName; // Assign the donator's name
-                    }
-                    callback(); // Move to the next item
-                });
-            }, (asyncErr) => {
-                if (asyncErr) {
-                    console.error("Error fetching donator name:", asyncErr);
+exports.showAdminInv = async function(req, res) {
+    try {
+        const user = req.user;
+        
+        // Extract filter options from the request query
+        const filterOptions = {
+            pantryLocation: req.query.pantryLocation || null,
+            itemType: req.query.itemType || null,
+            confirmed: req.query.confirmed || null,
+        };
+        
+        // Call the getAllInventory method with the filter options
+        const items = await new Promise((resolve, reject) => {
+            InvDAO.getAllInventory(filterOptions, (err, items) => {
+                if (err) {
+                    console.error("Error fetching inventory:", err);
+                    reject(err);
+                } else {
+                    resolve(items);
                 }
-
-                // Render the adminInventory page with inventory data
-                res.render("admin/adminInventory", { user: user, inventory: items });
             });
+        });
+
+        // Fetch donator names for each item
+        for (const item of items) {
+            try {
+                const donatorName = await new Promise((resolve, reject) => {
+                    UserDAO.getNameById(item.userId, (err, donatorName) => {
+                        if (err) {
+                            console.error("Error fetching donator name:", err);
+                            reject(err);
+                        } else {
+                            resolve(donatorName);
+                        }
+                    });
+                });
+                item.donatorName = donatorName;
+            } catch (err) {
+                console.error("Error fetching donator name:", err);
+                item.donatorName = "Unknown"; // Set a default value
+            }
         }
-    });
+
+        // Render the adminInventory page with inventory data
+        res.render("admin/adminInventory", { user: user, inventory: items });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Error fetching inventory");
+    }
 };
+
 
 // Method to handle admin user creation
 exports.adminCreateUser = function(req, res) {

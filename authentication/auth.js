@@ -37,6 +37,7 @@ exports.login = function (req, res, next) {
 
       // Passwords match, generate JWT token
       const payload = { 
+        userId: user._id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,

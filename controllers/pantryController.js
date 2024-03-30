@@ -1,9 +1,17 @@
 const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
-const e = require("express");
 const async = require('async');
 
+exports.checkUserSession = function(req, res, next) {
+    const user = req.user;
+    if (user) {
+        next(); 
+    } else {
+        console.error("User session expired or invalid");
+        res.redirect('/');
+    }
+};
 
 // Method to render the pantry home
 exports.showPantryHome = function(req, res) {
