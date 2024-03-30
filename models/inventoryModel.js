@@ -111,6 +111,20 @@ class invDAO {
         });
     }
 
+    updateInventoryItem(itemId, updateFields, cb) {
+        this.db.update({ _id: itemId }, { $set: updateFields }, {}, (err, numUpdated) => {
+            if (err) {
+                console.error("Error updating inventory item:", err);
+                cb(err);
+            } else {
+                console.log(`Updated ${numUpdated} item(s)`);
+                cb(null);
+            }
+        });
+    }
+
+
+
 }
 
 const dao = new invDAO;

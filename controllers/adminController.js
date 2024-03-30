@@ -21,6 +21,11 @@ exports.showUserDbPage = function(req, res) {
     });
 };
 
+exports.showAdminUserSettings = function(req, res) {
+    const user = req.user;
+    res.render("admin/adminUserSettings", { user: user });
+};
+
 exports.showAdminHome = function(req, res) {
     const user = req.user;
     res.render("admin/adminHome", { user: user });
@@ -67,6 +72,36 @@ exports.showAdminInv = function(req, res) {
                 res.render("admin/adminInventory", { user: user, inventory: items });
             });
         }
+    });
+};
+
+// Method to handle admin user creation
+exports.adminCreateUser = function(req, res) {
+    // Extract user data from the request body
+    const { firstName, lastName, email, password, role, pantryName } = req.body;
+
+    // Check if any required fields are missing
+    if (!firstName || !lastName || !email || !password || !role) {
+        res.status(401).send("Missing required fields");
+        return;
+    }
+
+    // Check if the user already exists
+    UserDAO.lookup(email, function (err, user) {
+        if (user) {
+            res.status(401).send("User already exists: " + email);
+            return;
+        }
+
+        // Create the admin user
+        UserDAO.adminCreate(firstName, lastName, email, password, role, pantryName, function (err) {
+            if (err) {
+                res.status(500).send("Error creating user: " + err.message);
+                return;
+            }
+            console.log("Admin user created:", email);
+            res.redirect("/admin/adminUserSettings"); // Redirect to admin settings page
+        });
     });
 };
 

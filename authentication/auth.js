@@ -20,7 +20,7 @@ exports.login = function (req, res, next) {
     if (!user) {
       // User not found
       console.log("User not found:", email);
-      return res.status(401).render("user/login");
+      return res.status(401).render("visitor/login");
     }
 
     console.log("User found:", email);
@@ -30,7 +30,7 @@ exports.login = function (req, res, next) {
       if (err || !result) {
         // Incorrect password
         console.error("Incorrect password for user", email);
-        return res.status(403).render("user/login");
+        return res.status(403).render("visitor/login");
       }
 
       console.log("Password correct for user:", email);
@@ -40,7 +40,9 @@ exports.login = function (req, res, next) {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role
+        role: user.role,
+        pantryName: user.pantryName
+        
       };
 
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
@@ -64,8 +66,8 @@ exports.verify = function (req, res, next) {
 
   if (!accessToken) {
     console.log("Access token not found in cookie");
-    req.user = null; // Set req.user to null indicating user is not authenticated
-    return next(); // Proceed to the next middleware without authentication
+    req.user = null; 
+    return next(); 
   }
 
   let payload;
@@ -77,6 +79,27 @@ exports.verify = function (req, res, next) {
   } catch (e) {
     console.error("Error verifying access token:", e.message);
     return res.status(401).send("Invalid access token");
+  }
+};
+
+exports.checkCookieExpiration = function(req, res, next) {
+  const accessToken = req.cookies.jwt;
+  if (accessToken) {
+      try {
+          const payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+          next();
+      } catch (err) {
+          if (err instanceof jwt.TokenExpiredError) {
+              res.clearCookie('jwt');
+              console.log("timed out redirecting");
+              return res.redirect('/');
+          } else {
+              console.error("Error verifying access token:", err.message);
+              return res.status(401).send("Invalid access token");
+          }
+      }
+  } else {
+      next();
   }
 };
 

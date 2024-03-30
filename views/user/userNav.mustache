@@ -3,7 +3,7 @@
     <!-- Container wrapper -->
     <div class="container">
         <!-- Navbar brand -->
-        <a class="navbar-brand mx-auto" href="/">
+        <a class="navbar-brand mx-auto" href="/user/home">
             <p class="fs-4 fs-md-3 fs-lg-2">THE SCOTTISH PANTRY NETWORK</p>
         </a>
 
@@ -15,23 +15,21 @@
         <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                     <a class="nav-link" href="/user/home">Welcome, {{ user.firstName }}</a>
+                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/userDonate">Donate</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Donate</a>
+                    <a class="nav-link" href="/">Contact</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/">Logout</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/profile">Welcome, {{ user.firstName }}</a>
-                </li>
-
-
-
-                
+      
             </ul>
         </div>
     </div>

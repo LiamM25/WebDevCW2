@@ -30,13 +30,14 @@ class UserDAO {
             role: 'admin'
         });
 
-         //admin
+         //pantry
          this.db.insert({
             firstName: 'Pantry1',
             lastName: 'Admin',
             email: 'pantry@email.com',
             password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
-            role: 'pantry'
+            role: 'pantry',
+            pantryName: 'Pantry1'
         });
 
 
@@ -118,6 +119,36 @@ class UserDAO {
             }
         });
     }
+
+    adminCreate(firstName, lastName, email, password, role, pantryName, cb) {
+        const that = this;
+        bcrypt.hash(password, saltRounds).then(function(hash) {
+            const entry = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hash,
+                role: role
+            };
+            if (role === 'pantry') {
+                // Add pantry name to the user entry
+                entry.pantryName = pantryName;
+            }
+            that.db.insert(entry, function (err) {
+                if (err) {
+                    console.error("Can't insert user:", email);
+                    cb(err);
+                    return;
+                }
+                cb(null);
+            });
+        }).catch(function(err) {
+            console.error("Error hashing password:", err);
+            cb(err);
+        });
+    }
+
+
 }
 const dao = new UserDAO();
 dao.init();

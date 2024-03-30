@@ -2,14 +2,14 @@ const express = require('express');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
 const app = express();
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
 require('dotenv').config();
 
-const cookieParser = require('cookie-parser');
+
 app.use(cookieParser());
-
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:false}));
-
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -36,8 +36,12 @@ const adminRoutes = require('./routes/adminRoutes');
 app.use('/admin', adminRoutes);
 
 // Placeholder for pantry worker related routes
-const pantryRoutes = require('./routes/userRoutes'); // Placeholder for pantry routes
+const pantryRoutes = require('./routes/pantryRoutes');
 app.use('/pantry', pantryRoutes);
+
+// Placeholder for pantry worker related routes
+const visitorRoutes = require('./routes/visitorRoutes'); 
+app.use('/visitor', visitorRoutes);
 
 
 

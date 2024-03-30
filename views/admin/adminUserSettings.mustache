@@ -1,0 +1,49 @@
+{{> header }}
+{{> admin/adminNav}}
+
+<form action="/admin/adminCreateUser" method="POST">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+        <option value="admin">Admin</option>
+        <option value="pantry">Pantry</option>
+    </select><br>
+
+    <!-- Pantry name field (hidden by default) -->
+    <div id="pantryNameField" style="display: none;">
+        <label for="pantryName">Pantry Name:</label>
+        <select id="pantryName" name="pantryName">
+            <option value="pantry1">Pantry 1</option>
+            <option value="pantry2">Pantry 2</option>
+            <!-- Add more options as needed -->
+        </select><br>
+    </div>
+
+    <button type="submit">Create User</button>
+</form>
+
+<script>
+    // Function to show/hide pantry name field based on selected role
+    document.getElementById("role").addEventListener("change", function() {
+        var role = this.value;
+        var pantryNameField = document.getElementById("pantryNameField");
+
+        // Show pantry name field if role is pantry, otherwise hide it
+        if (role === "pantry") {
+            pantryNameField.style.display = "block";
+        } else {
+            pantryNameField.style.display = "none";
+        }
+    });
+</script>

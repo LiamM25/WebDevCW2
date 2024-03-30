@@ -1,0 +1,83 @@
+{{> header }}
+{{> pantry/pantryNav}}
+
+<h2>Current Pantry Inventory</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Donator Name</th>
+            <th>Item Type</th>
+            <th>Item Name</th>
+            <th>Item Quantity</th>
+            <th>Weight</th>
+            <th>Expiration Date</th>
+            <th>Harvest Date</th>
+            <th>Confirmed</th>
+            <th>Update Confirmation Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#currentPantryInventory}}
+        <tr>
+            <td>{{donatorName}}</td>
+            <td>{{itemType}}</td>
+            <td>{{itemName}}</td>
+            <td>{{itemQuantity}}</td>
+            <td>{{Weight}}</td>
+            <td>{{ExpirationDate}}</td>
+            <td>{{HarvestDate}}</td>
+            <td>
+                {{#confirmedEqualsYes}}
+                    Yes
+                {{/confirmedEqualsYes}}
+                {{#confirmedEqualsNo}}
+                    No
+                {{/confirmedEqualsNo}}
+            </td>
+            <td>
+                <form action="/pantry/updateConfirmed" method="POST">
+                    <input type="hidden" name="itemId" value="{{itemId}}">
+                    <select name="confirmed">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <button type="submit">Update Confirmation</button>
+                </form>
+            </td>
+        </tr>
+        {{/currentPantryInventory}}
+    </tbody>
+</table>
+
+<!-- Table for other pantry inventory -->
+<h2>Other Pantry Inventory</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Pantry Location</th>
+            <th>Donator Name</th>
+            <th>Item Type</th>
+            <th>Item Name</th>
+            <th>Item Quantity</th>
+            <th>Weight</th>
+            <th>Expiration Date</th>
+            <th>Harvest Date</th>
+            <th>Confirmed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#otherPantryInventory}}
+        <tr>
+            <td>{{pantryLocation}}</td>
+            <td>{{donatorName}}</td>
+            <td>{{itemType}}</td>
+            <td>{{itemName}}</td>
+            <td>{{itemQuantity}}</td>
+            <td>{{Weight}}</td>
+            <td>{{ExpirationDate}}</td>
+            <td>{{HarvestDate}}</td>
+            <td>{{confirmed}}</td>
+        </tr>
+        {{/otherPantryInventory}}
+    </tbody>
+</table>
