@@ -1,6 +1,7 @@
 const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
+const async = require('async'); 
 
 exports.checkUserSession = function(req, res, next) {
     const user = req.user;
@@ -35,17 +36,53 @@ exports.renderUserDonatePage = function(req, res) {
 };
 
 
-exports.newDonation = function(req, res){
+exports.newDonation = function(req, res) {
     const user = req.user;
-    const { pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed } = req.body;
 
-    InvDAO.createItem(user.userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, (err, newDonation) => {
-        if (err) {
-            console.error("Error creating donation:", err);
-            res.status(500).send("Error creating donation");
+    // Extract the donation items from the request body
+    const donationItems = [];
+    for (let i = 1; i <= req.body.itemCount; i++) {
+        const pantryLocation = req.body['pantryLocation' + i];
+        const itemType = req.body['itemType' + i];
+        const itemName = req.body['itemName' + i];
+        const itemQuantity = req.body['itemQuantity' + i];
+        const weight = req.body['weight' + i];
+        const expirationDate = req.body['expirationDate' + i];
+        const harvestDate = req.body['harvestDate' + i];
+        const confirmed = req.body['confirmed' + i];
+
+        // Create a new donation item object
+        const donationItem = {
+            userId: user.userId,
+            pantryLocation: pantryLocation,
+            itemType: itemType,
+            itemName: itemName,
+            itemQuantity: itemQuantity,
+            weight: weight,
+            expirationDate: expirationDate,
+            harvestDate: harvestDate,
+            confirmed: confirmed
+        };
+
+        donationItems.push(donationItem);
+    }
+
+    // Save each donation item to the database
+    async.each(donationItems, (item, callback) => {
+        InvDAO.createItem(item, (err, newDonation) => {
+            if (err) {
+                console.error("Error creating donation:", err);
+            } else {
+                console.log("New donation created:", newDonation);
+            }
+            callback(); // Move to the next item
+        });
+    }, (asyncErr) => {
+        if (asyncErr) {
+            console.error("Error creating donations:", asyncErr);
+            res.status(500).send("Error creating donations");
         } else {
-            console.log("New donation created:", newDonation);
             res.render("user/userDonate", { user: user });
         }
     });
-}
+};
