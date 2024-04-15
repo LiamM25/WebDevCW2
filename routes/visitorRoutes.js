@@ -7,6 +7,7 @@ const { login, verify } = require('../authentication/auth.js');
 router.get('/login', visitorController.showLogin); 
 router.post("/login", visitorController.postLogin);
 router.get('/register', visitorController.showRegisterPage); 
-router.post('/register', visitorController.postNewUser); 
+router.post('/register', visitorController.postNewUser);
+router.get('/contact', visitorController.showContactPage);
 
 module.exports = router;

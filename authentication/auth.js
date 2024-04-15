@@ -62,6 +62,8 @@ exports.login = function (req, res, next) {
   });
 };
 
+//MAKE VERIFY METHODS FOR ADMIN AND PANTRY.
+
 exports.verify = function (req, res, next) {
   const accessToken = req.cookies.jwt;
 

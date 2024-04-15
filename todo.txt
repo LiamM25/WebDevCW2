@@ -1,1 +1,1 @@
-update all render methods to have else if statement to redirect if user is null, (done for rendering pantry inventory)
+ADD VERIFY METHODS FOR LEVEL OF AUTHETICATION

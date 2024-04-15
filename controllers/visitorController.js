@@ -12,6 +12,11 @@ exports.showRegisterPage = function (_req, res) {
     res.render("visitor/register");
 };
 
+// Method to render the contact page
+exports.showContactPage = function (_req, res) {
+    res.render("visitor/contact");
+};
+
 // Method to handle user login
 exports.postLogin = function (req, res) {
     // Call the login method from auth.js to handle user login

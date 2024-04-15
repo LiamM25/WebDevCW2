@@ -8,6 +8,7 @@
 .navbar-nav .nav-link {
   font-family: 'Montserrat', sans-serif;
   color: #333;
+  text-align: right;
 }
 .navbar {
   border-bottom: 1px solid #918d8d; 
@@ -37,7 +38,20 @@
   margin-right: 0.5rem; 
 }
 
-.img-fluid {
-  max-width: 100%;
+.sponsors-section{
+  font-family: 'Montserrat', sans-serif;
 }
 
+#sponsorCarousel .carousel-inner img {
+  max-width: 40%;
+  max-height: auto;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    display: none; /* Hide carousel control buttons */
+}
+
+.registration-content{
+  font-family: 'Montserrat', sans-serif;
+}
