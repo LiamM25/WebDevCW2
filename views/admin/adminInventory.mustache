@@ -1,84 +1,86 @@
 {{> header }}
 {{> admin/adminNav}}
 
-<h1>Inventory</h1>
-<!-- Button to reset filters -->
-<button onclick="resetFilters()">Reset Filters</button>
+<div class="container my-5">
+  <h1 class="text-center mb-4">Inventory</h1>
 
-<!-- Filter controls -->
-<div>
-  <label for="pantryLocationFilter">Pantry Location:</label>
-  <select id="pantryLocationFilter" onchange="filterInventory()">
-    <option value="">All</option>
-    <option value="Pantry1">Pantry 1</option>
-    <option value="Pantry2">Pantry 2</option>
-    
-  </select>
+  <!-- Filter controls -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="pantryLocationFilter">Pantry Location:</label>
+      <select id="pantryLocationFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Pantry1">Pantry 1</option>
+        <option value="Pantry2">Pantry 2</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label for="itemTypeFilter">Item Type:</label>
+      <select id="itemTypeFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Fruit/Veg">Fruit/Veg</option>
+        <option value="Canned Goods">Canned Goods</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label for="confirmedOrderFilter">Confirmed Inventory:</label>
+      <select id="confirmedOrderFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
+  </div>
+
+  <!-- Button to reset filters -->
+  <div class="text-center mb-4">
+    <button onclick="resetFilters()" class="btn btn-secondary">Reset Filters</button>
+  </div>
+
+  <!-- Inventory table -->
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Pantry Location</th>
+          <th>Item Type</th>
+          <th>Item Name</th>
+          <th>Item Quantity</th>
+          <th>Weight</th>
+          <th>Expiration Date</th>
+          <th>Harvest Date</th>
+          <th>Confirmed</th>
+          <th>Donator Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#inventory}}
+        <tr>
+          <td>{{pantryLocation}}</td>
+          <td>{{itemType}}</td>
+          <td>{{itemName}}</td>
+          <td>{{itemQuantity}}</td>
+          <td>{{Weight}}</td>
+          <td>{{ExpirationDate}}</td>
+          <td>{{HarvestDate}}</td>
+          <td>{{confirmed}}</td>
+          <td>{{donatorName}}</td>
+          <td>
+            <form action="/admin/deleteInvItem" method="POST">
+              <input type="hidden" name="itemId" value="{{_id}}">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{/inventory}}
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<div>
-  <label for="itemTypeFilter">Item Type:</label>
-  <select id="itemTypeFilter" onchange="filterInventory()">
-    <option value="">All</option>
-    <option value="Fruit/Veg">Fruit/Veg</option>
-    <option value="Canned Goods">Canned Goods</option>
-    <option value="Meat/Poultry">Meat/Poultry</option>
-    <option value="Fish">Fish</option>
-    <option value="Grains">Grains</option>
-    <option value="Milk Products">Milk Products</option>
-    <option value="Other">Other</option>
-    </select>
-</div>
-
-<div>
-  <label for="confirmedOrderFilter">Confirmed Inventory:</label>
-  <select id="confirmedOrderFilter" onchange="filterInventory()">
-    <option value="">All</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-    
-  </select>
-</div>
-
-
-
-<table>
-  <thead>
-    <tr>
-      <th>Pantry Location</th>
-      <th>Item Type</th>
-      <th>Item Name</th>
-      <th>Item Quantity</th>
-      <th>Weight</th>
-      <th>Expiration Date</th>
-      <th>Harvest Date</th>
-      <th>Confirmed</th>
-      <th>Donator Name</th> 
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#inventory}}
-    <tr>
-      <td>{{pantryLocation}}</td>
-      <td>{{itemType}}</td>
-      <td>{{itemName}}</td>
-      <td>{{itemQuantity}}</td>
-      <td>{{Weight}}</td>
-      <td>{{ExpirationDate}}</td>
-      <td>{{HarvestDate}}</td>
-      <td>{{confirmed}}</td>
-      <td>{{donatorName}}</td> 
-      <td>
-        <form action="/admin/deleteInvItem" method="POST">
-            <input type="hidden" name="itemId" value="{{_id}}">
-            <button type="submit">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {{/inventory}}
-  </tbody>
-</table>
 
 <script>
   // JavaScript function to filter inventory
@@ -87,7 +89,6 @@
     const pantryLocation = document.getElementById("pantryLocationFilter").value;
     const itemType = document.getElementById("itemTypeFilter").value;
     const confirmed = document.getElementById("confirmedOrderFilter").value;
-    // Get other filter options similarly for other columns
 
     // Construct URL with filter options
     const queryParams = new URLSearchParams();
@@ -100,17 +101,16 @@
     if (confirmed) {
       queryParams.append('confirmed', confirmed);
     }
-    
-    
+    // Add more filters if needed
 
     const url = '/admin/adminInventory?' + queryParams.toString();
 
     // Redirect to filtered inventory page
     window.location.href = url;
+  }
 
-
-    // JavaScript function to reset filters
-    function resetFilters() {
+  // JavaScript function to reset filters
+  function resetFilters() {
     // Reset all filter controls to default values
     document.getElementById("pantryLocationFilter").value = "";
     document.getElementById("itemTypeFilter").value = "";
@@ -119,7 +119,7 @@
     // Redirect to display full database
     location.reload();
   }
-
-
-  }
 </script>
+
+{{> sponsers}}
+{{> footer }}

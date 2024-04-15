@@ -1,37 +1,50 @@
 {{> header }}
 {{> admin/adminNav}}
 
-<form action="/admin/adminCreateUser" method="POST">
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" required><br>
-
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" required><br>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br>
-
-    <label for="role">Role:</label>
-    <select id="role" name="role">
-        <option value="admin">Admin</option>
-        <option value="pantry">Pantry</option>
-    </select><br>
-
-    <!-- Pantry name field (hidden by default) -->
-    <div id="pantryNameField" style="display: none;">
-        <label for="pantryName">Pantry Name:</label>
-        <select id="pantryName" name="pantryName">
-            <option value="pantry1">Pantry 1</option>
-            <option value="pantry2">Pantry 2</option>
-            <!-- Add more options as needed -->
-        </select><br>
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="registration-content">
+                <h2 class="text-center mb-4">Create Privileged Account</h2>
+                <form action="/admin/adminCreateUser" method="POST">
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="pantry">Pantry</option>
+                        </select>
+                    </div>
+                    <!-- Pantry name field (hidden by default) -->
+                    <div id="pantryNameField" style="display: none;" class="form-group">
+                        <label for="pantryName">Pantry Name:</label>
+                        <select id="pantryName" name="pantryName" class="form-control">
+                            <option value="pantry1">Pantry 1</option>
+                            <option value="pantry2">Pantry 2</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create User</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <button type="submit">Create User</button>
-</form>
+</div>
 
 <script>
     // Function to show/hide pantry name field based on selected role
@@ -47,3 +60,6 @@
         }
     });
 </script>
+
+{{> sponsers}}
+{{> footer}}

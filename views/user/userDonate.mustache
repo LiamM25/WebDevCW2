@@ -1,66 +1,74 @@
 {{> header }}
-{{> user/userNav}}
+{{> user/userNav }}
 
-<h1>Donation</h1>
-
-<form id="donationForm" action="/user/newDonation" method="POST">
-    <!-- Button to Add Another Item -->
-    <button type="button" onclick="addAnotherItem()" id="addAnotherItemBtn">Add Another Item</button>
-
-    <!-- First Donation Item Section -->
-    <div class="item-section">
-        <h1>New item</h1>
-        <!-- Item Type Dropdown -->
-        <label for="itemType1">Item Type:</label>
-        <select class="itemType" name="itemType1" required onchange="toggleHarvestDate(this)">
-            <option value="Canned Goods" selected>Canned Goods</option>
-            <option value="Fruit/Veg">Fruit/Veg</option>
-            <!-- Add other options -->
-        </select><br>
-
-        <!-- Harvest Date Field (Initially Hidden) -->
-        <div class="harvestDateWrapper" style="display: none;">
-            <label for="harvestDate1">Harvest Date:</label>
-            <input type="date" name="harvestDate1"><br>
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Column for the logo image -->
+            <div class="d-flex justify-content-center text-center">
+                <img src="/images/TSPN_logo enhanced.png" alt="TSPN Logo" class="img-fluid">
+            </div>
         </div>
 
-        <!-- Item Name Field -->
-        <label for="itemName1">Item Name:</label>
-        <input type="text" name="itemName1" required><br>
-
-        <!-- Item Quantity Field -->
-        <label for="itemQuantity1">Item Quantity:</label>
-        <input type="number" name="itemQuantity1" required><br>
-
-        <!-- Weight Field -->
-        <label for="weight1">Weight:</label>
-        <input type="text" name="weight1"><br>
-
-        <!-- Expiration Date Field -->
-        <label for="expirationDate1">Expiration Date:</label>
-        <input type="date" name="expirationDate1"><br>
-
-        <!-- Pantry Location Dropdown -->
-        <label for="pantryLocation1">Pantry Location:</label>
-        <select name="pantryLocation1" required>
-            <option value="Pantry1">Pantry1</option>
-            <option value="Pantry2">Pantry2</option>
-            <!-- Add other options -->
-        </select><br>
+        <div class="col-md-4 ">
+            <div class="registration-content">
+                <h2 class="text-center mb-4">Make a Donation</h2>
+                <form id="donationForm" action="/user/newDonation" method="POST" class="text-center">
+                    <div class="form-group">
+                        <label for="itemType">Item Type</label>
+                        <select name="itemType" class="form-control" required onchange="toggleHarvestDate(this)">
+                            <option value="Canned Goods" selected>Canned Goods</option>
+                            <option value="Fruit/Veg">Fruit/Veg</option>
+                            <option value="Meat/Poultry">Meat/Poultry</option>
+                            <option value="Fish">Fish</option>
+                            <option value="Grains">Grains</option>
+                            <option value="Milk Products">Milk Products</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group harvestDateWrapper" style="display: none;">
+                        <label for="harvestDate">Harvest Date</label>
+                        <input type="date" name="harvestDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Name</label>
+                        <input type="text" name="itemName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemQuantity">Quantity</label>
+                        <input type="number" name="itemQuantity" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight</label>
+                        <input type="text" name="weight" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="expirationDate">Expiration Date</label>
+                        <input type="date" name="expirationDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pantryLocation">Pantry Location</label>
+                        <select name="pantryLocation" class="form-control" required>
+                            <option value="Pantry1">Pantry1</option>
+                            <option value="Pantry2">Pantry2</option>
+                            <!-- Add other options -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Donate</button>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
-    <!-- Submit Button -->
-    <input type="submit" value="Donate">
-</form>
+{{> sponsers }}
+{{> footer }}
 
 <script>
-
-    let itemCount = 1; // Counter to keep track of the number of items
-    
-
     function toggleHarvestDate(selectElement) {
         const selectedItemType = selectElement.value;
-        const harvestDateWrapper = selectElement.parentElement.querySelector('.harvestDateWrapper');
+        const itemSection = selectElement.closest('.registration-content');
+        const harvestDateWrapper = itemSection.querySelector('.harvestDateWrapper');
         
         // If item type is Fruit/Veg, show the Harvest Date field; otherwise, hide it
         if (selectedItemType === "Fruit/Veg") {
@@ -68,32 +76,5 @@
         } else {
             harvestDateWrapper.style.display = "none";
         }
-    }
-
-    function addAnotherItem() {
-        itemCount++; // Increment the item counter
-
-        // Clone the first item section
-        const firstItemSection = document.querySelector('.item-section');
-        const newItemSection = firstItemSection.cloneNode(true);
-        
-        // Clear input values in the cloned section
-        const inputs = newItemSection.querySelectorAll('input');
-        inputs.forEach(input => input.value = '');
-
-        // Reset the item type dropdown
-        const selectElement = newItemSection.querySelector('.itemType');
-        selectElement.selectedIndex = 0;
-        toggleHarvestDate(selectElement);
-
-        // Update element names to include item count
-        const elements = newItemSection.querySelectorAll('[name]');
-        elements.forEach(element => {
-            element.name = element.name.replace(/[0-9]+$/, '') + itemCount;
-        });
-
-        // Append the cloned section to the form
-        const form = document.getElementById('donationForm');
-        form.insertBefore(newItemSection, form.lastElementChild);
     }
 </script>

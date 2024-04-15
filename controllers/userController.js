@@ -35,53 +35,34 @@ exports.renderUserDonatePage = function(req, res) {
     
 };
 
+exports.renderUserContactPage = function(req, res) {
+    const user = req.user;
+    res.render("user/userContact", { user: user });
+    
+};
 
-exports.newDonation = function(req, res) {
+
+exports.newDonation = function(req, res, next) {
     const user = req.user;
 
-    // Extract the donation items from the request body
-    const donationItems = [];
-    for (let i = 1; i <= req.body.itemCount; i++) {
-        const pantryLocation = req.body['pantryLocation' + i];
-        const itemType = req.body['itemType' + i];
-        const itemName = req.body['itemName' + i];
-        const itemQuantity = req.body['itemQuantity' + i];
-        const weight = req.body['weight' + i];
-        const expirationDate = req.body['expirationDate' + i];
-        const harvestDate = req.body['harvestDate' + i];
-        const confirmed = req.body['confirmed' + i];
+    // Extract the donation item from the request body
+    const userId = user.userId; // Extract user ID from req.user
+    const pantryLocation = req.body.pantryLocation;
+    const itemType = req.body.itemType;
+    const itemName = req.body.itemName;
+    const itemQuantity = req.body.itemQuantity;
+    const weight = req.body.weight || ''; // Set to empty string if not provided
+    const expirationDate = req.body.expirationDate || ''; // Set to empty string if not provided
+    const harvestDate = req.body.harvestDate || ''; // Set to empty string if not provided
+    const confirmed = req.body.confirmed || false; // Set confirmed to false if not provided
 
-        // Create a new donation item object
-        const donationItem = {
-            userId: user.userId,
-            pantryLocation: pantryLocation,
-            itemType: itemType,
-            itemName: itemName,
-            itemQuantity: itemQuantity,
-            weight: weight,
-            expirationDate: expirationDate,
-            harvestDate: harvestDate,
-            confirmed: confirmed
-        };
-
-        donationItems.push(donationItem);
-    }
-
-    // Save each donation item to the database
-    async.each(donationItems, (item, callback) => {
-        InvDAO.createItem(item, (err, newDonation) => {
-            if (err) {
-                console.error("Error creating donation:", err);
-            } else {
-                console.log("New donation created:", newDonation);
-            }
-            callback(); // Move to the next item
-        });
-    }, (asyncErr) => {
-        if (asyncErr) {
-            console.error("Error creating donations:", asyncErr);
-            res.status(500).send("Error creating donations");
+    // Call the createItem function from InvDAO
+    InvDAO.createItem(userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, (err, newDonation) => {
+        if (err) {
+            console.error("Error creating donation:", err);
+            res.status(500).send("Error creating donation");
         } else {
+            console.log("New donation created:", newDonation);
             res.render("user/userDonate", { user: user });
         }
     });
