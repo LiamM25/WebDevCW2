@@ -26,8 +26,7 @@ exports.postLogin = function (req, res) {
             console.error("Error logging in:", err);
             return res.status(500).send("Internal server error");
         }
-        
-        
+                
         // Redirect based on user's role
         const userRole = req.userRole; // Access user's role from req object
         console.log("User Role:", userRole);

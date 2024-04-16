@@ -37,7 +37,7 @@ class UserDAO {
             email: 'pantry@email.com',
             password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
             role: 'pantry',
-            pantryName: 'Pantry1'
+            pantryName: 'Parkhead School House'
         });
 
 

@@ -12,7 +12,7 @@ class invDAO {
     init() {
         
         this.db.insert({
-            pantryLocation: 'Pantry1',
+            pantryLocation: 'Parkhead School House',
             itemType: 'Fruit/Veg',
             itemName: 'Carrots',
             itemQuantity: '30',
@@ -23,7 +23,7 @@ class invDAO {
         });
 
         this.db.insert({
-            pantryLocation: 'Pantry2',
+            pantryLocation: 'Ruchazie Pantry',
             itemType: 'Canned Goods',
             itemName: 'Soup',
             itemQuantity: '20',
