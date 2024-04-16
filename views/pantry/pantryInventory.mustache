@@ -1,83 +1,178 @@
 {{> header }}
 {{> pantry/pantryNav}}
 
-<h2>Current Pantry Inventory</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Donator Name</th>
-            <th>Item Type</th>
-            <th>Item Name</th>
-            <th>Item Quantity</th>
-            <th>Weight</th>
-            <th>Expiration Date</th>
-            <th>Harvest Date</th>
-            <th>Confirmed</th>
-            <th>Update Confirmation Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#currentPantryInventory}}
-        <tr>
-            <td>{{donatorName}}</td>
-            <td>{{itemType}}</td>
-            <td>{{itemName}}</td>
-            <td>{{itemQuantity}}</td>
-            <td>{{Weight}}</td>
-            <td>{{ExpirationDate}}</td>
-            <td>{{HarvestDate}}</td>
-            <td>
-                {{#confirmedEqualsYes}}
-                    Yes
-                {{/confirmedEqualsYes}}
-                {{#confirmedEqualsNo}}
-                    No
-                {{/confirmedEqualsNo}}
-            </td>
-            <td>
-                <form action="/pantry/updateConfirmed" method="POST">
-                    <input type="hidden" name="itemId" value="{{itemId}}">
-                    <select name="confirmed">
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                    <button type="submit">Update Confirmation</button>
-                </form>
-            </td>
-        </tr>
-        {{/currentPantryInventory}}
-    </tbody>
-</table>
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Current Pantry Inventory</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Donator Name</th>
+                            <th>Item Type</th>
+                            <th>Item Name</th>
+                            <th>Item Quantity</th>
+                            <th>Weight</th>
+                            <th>Expiration Date</th>
+                            <th>Harvest Date</th>
+                            <th>Confirmed</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#currentPantryInventory}}
+                        <tr>
+                            <td>{{donatorName}}</td>
+                            <td>{{itemType}}</td>
+                            <td>{{itemName}}</td>
+                            <td>{{itemQuantity}}</td>
+                            <td>{{Weight}}</td>
+                            <td>{{ExpirationDate}}</td>
+                            <td>{{HarvestDate}}</td>
+                            <td>
+                                {{#confirmedEqualsYes}}
+                                    Yes
+                                {{/confirmedEqualsYes}}
+                                {{#confirmedEqualsNo}}
+                                    No
+                                {{/confirmedEqualsNo}}
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCurrentItemModal{{_id}}">
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                <form action="/pantry/deleteItem" method="POST">
+                                    <input type="hidden" name="itemId" value="{{_id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <!-- Edit Modal for Current Inventory Items -->
+                        <div class="modal fade" id="editCurrentItemModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="editCurrentItemModal{{_id}}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editCurrentItemModal{{_id}}Label">Edit Item</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Form for editing item details -->
+                                        <form id="editForm{{_id}}">
+                                            <div class="form-group">
+                                                <label for="editItemQuantity">Item Quantity:</label>
+                                                <input type="text" class="form-control" id="editItemQuantity" name="editItemQuantity" value="{{itemQuantity}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="editWeight">Weight:</label>
+                                                <input type="text" class="form-control" id="editWeight" name="editWeight" value="{{Weight}}">
+                                            </div>
+                                            <!-- Add more input fields for other editable fields -->
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitEditForm('{{_id}}')">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/currentPantryInventory}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h2>Other Pantry Inventory</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Pantry Location</th>
+                            <th>Donator Name</th>
+                            <th>Item Type</th>
+                            <th>Item Name</th>
+                            <th>Item Quantity</th>
+                            <th>Weight</th>
+                            <th>Expiration Date</th>
+                            <th>Harvest Date</th>
+                            <th>Confirmed</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#otherPantryInventory}}
+                        <tr>
+                            <td>{{pantryLocation}}</td>
+                            <td>{{donatorName}}</td>
+                            <td>{{itemType}}</td>
+                            <td>{{itemName}}</td>
+                            <td>{{itemQuantity}}</td>
+                            <td>{{Weight}}</td>
+                            <td>{{ExpirationDate}}</td>
+                            <td>{{HarvestDate}}</td>
+                            <td>{{confirmed}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editOtherItemModal{{_id}}">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Edit Modal for Other Inventory Items -->
+                        <div class="modal fade" id="editOtherItemModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="editOtherItemModal{{_id}}Label" aria-hidden="true">
+                            <!-- Modal Content Here -->
+                        </div>
+                        {{/otherPantryInventory}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Table for other pantry inventory -->
-<h2>Other Pantry Inventory</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Pantry Location</th>
-            <th>Donator Name</th>
-            <th>Item Type</th>
-            <th>Item Name</th>
-            <th>Item Quantity</th>
-            <th>Weight</th>
-            <th>Expiration Date</th>
-            <th>Harvest Date</th>
-            <th>Confirmed</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#otherPantryInventory}}
-        <tr>
-            <td>{{pantryLocation}}</td>
-            <td>{{donatorName}}</td>
-            <td>{{itemType}}</td>
-            <td>{{itemName}}</td>
-            <td>{{itemQuantity}}</td>
-            <td>{{Weight}}</td>
-            <td>{{ExpirationDate}}</td>
-            <td>{{HarvestDate}}</td>
-            <td>{{confirmed}}</td>
-        </tr>
-        {{/otherPantryInventory}}
-    </tbody>
-</table>
+<script>
+    function submitEditForm(itemId) {
+        // Get the updated values from the form fields
+        var itemQuantity = document.getElementById('editItemQuantity').value;
+        var weight = document.getElementById('editWeight').value;
+
+        // Create an object with the updated values
+        var updateFields = {
+            itemQuantity: itemQuantity,
+            Weight: weight
+            // Add more fields as needed
+        };
+
+        // Send the updated values to the server using an HTTP request (e.g., AJAX)
+        // Example using fetch API
+        fetch('/pantry/updateInventoryItem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                itemId: itemId,
+                updateFields: updateFields
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update item');
+            }
+            // Reload the page or update the UI as needed
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error
+        });
+    }
+</script>
+
+{{> sponsers}}
+{{> footer}}
