@@ -22,10 +22,10 @@ exports.showHomePage = function(req, res) {
 
 // Method to handle user logout
 exports.logout = function (_req, res) {
-    // Call clearCookies method from auth module to clear cookies
+    // Call clearCookies method
     auth.clearCookies(res);
 
-    // Redirect the user to the homepage or login page
+    // Redirect the user
     res.redirect("/");
 };
 
@@ -45,18 +45,18 @@ exports.renderUserContactPage = function(req, res) {
 exports.newDonation = function(req, res, next) {
     const user = req.user;
 
-    // Extract the donation item from the request body
-    const userId = user.userId; // Extract user ID from req.user
+    // Extract the donation item
+    const userId = user.userId; // user ID from req.user
     const pantryLocation = req.body.pantryLocation;
     const itemType = req.body.itemType;
     const itemName = req.body.itemName;
     const itemQuantity = req.body.itemQuantity;
     const weight = req.body.weight || ''; // Set to empty string if not provided
-    const expirationDate = req.body.expirationDate || ''; // Set to empty string if not provided
-    const harvestDate = req.body.harvestDate || ''; // Set to empty string if not provided
-    const confirmed = req.body.confirmed || false; // Set confirmed to false if not provided
+    const expirationDate = req.body.expirationDate || ''; 
+    const harvestDate = req.body.harvestDate || ''; 
+    const confirmed = req.body.confirmed || false; 
 
-    // Call the createItem function from InvDAO
+    // Call the createItem function
     InvDAO.createItem(userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, (err, newDonation) => {
         if (err) {
             console.error("Error creating donation:", err);

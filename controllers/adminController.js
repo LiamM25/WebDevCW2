@@ -79,7 +79,7 @@ exports.showAdminInv = async function(req, res) {
                 item.donatorName = donatorName;
             } catch (err) {
                 console.error("Error fetching donator name:", err);
-                item.donatorName = "Unknown"; // Set a default value
+                item.donatorName = "Unknown";
             }
         }
 
@@ -94,7 +94,7 @@ exports.showAdminInv = async function(req, res) {
 
 // Method to handle admin user creation
 exports.adminCreateUser = function(req, res) {
-    // Extract user data from the request body
+    // Extract user data 
     const { firstName, lastName, email, password, role, pantryName } = req.body;
 
     // Check if any required fields are missing
@@ -117,24 +117,24 @@ exports.adminCreateUser = function(req, res) {
                 return;
             }
             console.log("Admin user created:", email);
-            res.redirect("/admin/adminUserSettings"); // Redirect to admin settings page
+            res.redirect("/admin/adminUserSettings");
         });
     });
 };
 
 // Method to handle logout
 exports.logout = function (_req, res) {
-    // Call clearCookies method from auth module to clear cookies
+    // Call clearCookies
     auth.clearCookies(res);
 
-    // Redirect the user to the homepage or login page
+    // Redirect the user to the index
     res.redirect("/");
 };
 
 exports.deleteUser = function(req, res) {
     const userId = req.body.userId;
 
-    // Call the deleteUser method from your userModel to delete the user
+    // Call the deleteUser method 
     UserDAO.deleteUser(userId, (err) => {
         if (err) {
             // Handle error
@@ -148,9 +148,9 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.deleteInvItem = function(req, res) {
-    const itemId = req.body.itemId; // Retrieve item ID from the request body
+    const itemId = req.body.itemId; // Retrieve item ID 
 
-    // Call the deleteInventoryItem method from InvDAO to delete the item
+    // Call the deleteInventoryItem method 
     InvDAO.deleteInventoryItem(itemId, (err) => {
         if (err) {
             console.error("Error deleting inventory item:", err);
@@ -159,7 +159,7 @@ exports.deleteInvItem = function(req, res) {
             return;
         }
         console.log("Successfully deleted inventory item:", itemId);
-        // Redirect back to the admin inventory page after deletion
+        // Redirect back to the admin inventory
         res.redirect("/admin/adminInventory");
     });
 };

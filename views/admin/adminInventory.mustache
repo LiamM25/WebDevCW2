@@ -12,7 +12,7 @@
         <option value="">All</option>
         <option value="Pantry1">Pantry 1</option>
         <option value="Pantry2">Pantry 2</option>
-        <!-- Add more options as needed -->
+        
       </select>
     </div>
     <div class="col-md-4">
@@ -21,7 +21,7 @@
         <option value="">All</option>
         <option value="Fruit/Veg">Fruit/Veg</option>
         <option value="Canned Goods">Canned Goods</option>
-        <!-- Add more options as needed -->
+        
       </select>
     </div>
     <div class="col-md-4">
@@ -30,7 +30,7 @@
         <option value="">All</option>
         <option value="Yes">Yes</option>
         <option value="No">No</option>
-        <!-- Add more options as needed -->
+        
       </select>
     </div>
   </div>
@@ -83,14 +83,13 @@
 </div>
 
 <script>
-  // JavaScript function to filter inventory
+  // function to filter inventory
   function filterInventory() {
     // Get selected filter options
     const pantryLocation = document.getElementById("pantryLocationFilter").value;
     const itemType = document.getElementById("itemTypeFilter").value;
     const confirmed = document.getElementById("confirmedOrderFilter").value;
 
-    // Construct URL with filter options
     const queryParams = new URLSearchParams();
     if (pantryLocation) {
       queryParams.append('pantryLocation', pantryLocation);
@@ -101,7 +100,6 @@
     if (confirmed) {
       queryParams.append('confirmed', confirmed);
     }
-    // Add more filters if needed
 
     const url = '/admin/adminInventory?' + queryParams.toString();
 
@@ -109,14 +107,12 @@
     window.location.href = url;
   }
 
-  // JavaScript function to reset filters
   function resetFilters() {
     // Reset all filter controls to default values
     document.getElementById("pantryLocationFilter").value = "";
     document.getElementById("itemTypeFilter").value = "";
     document.getElementById("confirmedOrderFilter").value = "";
 
-    // Redirect to display full database
     location.reload();
   }
 </script>

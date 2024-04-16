@@ -65,7 +65,7 @@ class invDAO {
     getAllInventory(filterOptions, cb) {
         console.log("Fetching inventory items with filter options:", filterOptions);
         
-        // query object based on filter options
+        // query based on filter options
         const query = {};
         if (filterOptions.pantryLocation) {
             query.pantryLocation = filterOptions.pantryLocation;
@@ -77,7 +77,7 @@ class invDAO {
             query.confirmed = filterOptions.confirmed;
         }
     
-        // Execute the query with the constructed filter
+        // Execute the query
         this.db.find(query, (err, items) => {
             if (err) {
                 console.error("Error fetching inventory:", err);

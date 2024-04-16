@@ -1,32 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController.js'); 
-const { login, verify, } = require('../authentication/auth.js');
+const { login, verify, verifyAdmin, } = require('../authentication/auth.js');
 const {checkUserSession} = require('../controllers/adminController.js'); 
 
-
-
-// Define separate routes 
-router.get('/userDb', verify, checkUserSession,  adminController.showUserDbPage);
+//user db page
+router.get('/userDb', verifyAdmin, checkUserSession,  adminController.showUserDbPage);
 
 //Admin home
-router.get('/adminHome', verify, checkUserSession, adminController.showAdminHome);
+router.get('/adminHome', verifyAdmin, checkUserSession, adminController.showAdminHome);
 
 //Admin inv
-router.get('/adminInventory', verify, checkUserSession, adminController.showAdminInv);
+router.get('/adminInventory', verifyAdmin, checkUserSession, adminController.showAdminInv);
 
 //admin user settings
-router.get('/adminUserSettings', verify, checkUserSession, adminController.showAdminUserSettings);
+router.get('/adminUserSettings', verifyAdmin, checkUserSession, adminController.showAdminUserSettings);
 
 
 // Delete user
-router.post('/deleteUser', verify, checkUserSession, adminController.deleteUser);
+router.post('/deleteUser', verifyAdmin, checkUserSession, adminController.deleteUser);
 
 // Delete inv item
-router.post('/deleteInvItem', verify, checkUserSession, adminController.deleteInvItem);
+router.post('/deleteInvItem', verifyAdmin, checkUserSession, adminController.deleteInvItem);
 
 // create new admin or pantry account
-router.post('/adminCreateUser', verify, checkUserSession, adminController.adminCreateUser); 
+router.post('/adminCreateUser', verifyAdmin, checkUserSession, adminController.adminCreateUser); 
 
 
 module.exports = router;

@@ -19,7 +19,7 @@ exports.showContactPage = function (_req, res) {
 
 // Method to handle user login
 exports.postLogin = function (req, res) {
-    // Call the login method from auth.js to handle user login
+    // Call the login method 
     auth.login(req, res, function (err) {
         if (err) {
             // Handle login error
@@ -28,7 +28,7 @@ exports.postLogin = function (req, res) {
         }
         
         
-        // Redirect to the appropriate route based on user's role
+        // Redirect based on user's role
         const userRole = req.userRole; // Access user's role from req object
         console.log("User Role:", userRole);
         if (userRole === 'user') {

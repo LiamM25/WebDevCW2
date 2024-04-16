@@ -36,7 +36,7 @@
                         <select id="pantryName" name="pantryName" class="form-control">
                             <option value="pantry1">Pantry 1</option>
                             <option value="pantry2">Pantry 2</option>
-                            <!-- Add more options as needed -->
+                            
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Create User</button>
@@ -47,12 +47,12 @@
 </div>
 
 <script>
-    // Function to show/hide pantry name field based on selected role
+    // Function to show/hide pantry name field
     document.getElementById("role").addEventListener("change", function() {
         var role = this.value;
         var pantryNameField = document.getElementById("pantryNameField");
 
-        // Show pantry name field if role is pantry, otherwise hide it
+        
         if (role === "pantry") {
             pantryNameField.style.display = "block";
         } else {

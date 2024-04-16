@@ -35,7 +35,7 @@ exports.login = function (req, res, next) {
 
       console.log("Password correct for user:", email);
 
-      // Passwords match, generate JWT token
+      // generate JWT token
       const payload = { 
         userId: user._id,
         email: user.email,
@@ -62,7 +62,51 @@ exports.login = function (req, res, next) {
   });
 };
 
-//MAKE VERIFY METHODS FOR ADMIN AND PANTRY.
+exports.verifyUser = function (req, res, next) {
+  verifyWithRole(req, res, next, 'user');
+};
+
+exports.verifyPantry = function (req, res, next) {
+  verifyWithRole(req, res, next, 'pantry');
+};
+
+exports.verifyAdmin = function (req, res, next) {
+  verifyWithRole(req, res, next, 'admin');
+};
+
+function verifyWithRole(req, res, next, role) {
+  const accessToken = req.cookies.jwt;
+
+  if (!accessToken) {
+    console.log("Access token not found in cookie");
+    req.user = null; 
+    return next(); 
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    req.user = payload; 
+
+    // Check if the user's role matches the specified role
+    if (req.user.role === role) {
+      console.log(`Verification complete for ${role}`);
+      next();
+    } else {
+      console.log(`Unauthorised access for ${req.user.role}`);
+      
+      setTimeout(() => {
+        res.redirect('/'); 
+    }, 5000);
+      
+    }
+  } catch (e) {
+    console.error("Error verifying access token:", e.message);
+    return res.status(401).send("Invalid access token");
+  }
+}
+
+
 
 exports.verify = function (req, res, next) {
   const accessToken = req.cookies.jwt;

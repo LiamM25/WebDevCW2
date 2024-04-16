@@ -51,7 +51,7 @@
                         <select name="pantryLocation" class="form-control" required>
                             <option value="Pantry1">Pantry1</option>
                             <option value="Pantry2">Pantry2</option>
-                            <!-- Add other options -->
+                           
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Donate</button>
@@ -70,7 +70,6 @@
         const itemSection = selectElement.closest('.registration-content');
         const harvestDateWrapper = itemSection.querySelector('.harvestDateWrapper');
         
-        // If item type is Fruit/Veg, show the Harvest Date field; otherwise, hide it
         if (selectedItemType === "Fruit/Veg") {
             harvestDateWrapper.style.display = "block";
         } else {
