@@ -78,23 +78,41 @@ exports.showPantryInventory = function(req, res) {
     }
 };
 
-// Handler for updating inventory item confirmation status
+// Handler for updating inventory item fields
 exports.updateInventory = function(req, res) {
-    // Extract item ID and confirmation status from the request body
+    // Extract item ID, field to update, and new value from the request body
     const itemId = req.body.itemId;
-    const confirmed = req.body.confirmed;
+    const fieldToUpdate = req.body.fieldToUpdate;
+    const newValue = req.body.newValue;
 
-    // Update fields object with the confirmation status
-    const updateFields = { confirmed: confirmed };
+    // Update fields object with the field to update and the new value
+    const updateFields = { [fieldToUpdate]: newValue };
 
     // Call the updateInventoryItem method from the inventoryModel
-    InventoryModel.updateInventoryItem(itemId, updateFields, (err) => {
+    InvDAO.updateInventoryItem(itemId, updateFields, (err) => {
         if (err) {
             // Handle error
-            return res.status(500).json({ error: 'Failed to update inventory item confirmation status.' });
+            return res.status(500).json({ error: `Failed to update ${fieldToUpdate} field.` });
         } else {
             // Send success response
-            return res.status(200).json({ message: 'Inventory item confirmation status updated successfully.' });
+            res.redirect("/pantry/pantryInventory");
         }
     });
 };
+
+//method to delete pantry item
+exports.deleteInventoryItem = function(req, res) {
+    const itemId = req.body.itemId;
+
+    // Call the deleteUser method from your userModel to delete the user
+    InvDAO.deleteInventoryItem(itemId, (err) => {
+        if (err) {
+            // Handle error
+            console.error("Error deleting item:", err);
+            res.status(500).send("Internal server error");
+            return;
+        }
+        // Redirect back to the user database page after deletion
+        res.redirect("/pantry/pantryInventory");
+    });
+}

@@ -18,6 +18,7 @@
                             <th>Harvest Date</th>
                             <th>Confirmed</th>
                             <th>Action</th>
+                            <th>Delete</th> <!-- New column for delete button -->
                         </tr>
                     </thead>
                     <tbody>
@@ -32,26 +33,33 @@
                             <td>{{HarvestDate}}</td>
                             <td>{{confirmed}}</td>
                             <td>
-                                <form action="/updateInventory" method="POST">
+                               <form action="/pantry/updateInventory" method="POST">
+    <input type="hidden" name="itemId" value="{{_id}}">
+    <div class="form-group">
+        <label for="fieldToUpdate">Select Field to Edit:</label>
+        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
+            <option value="donatorName">Donator Name</option>
+            <option value="itemType">Item Type</option>
+            <option value="itemName">Item Name</option>
+            <option value="itemQuantity">Item Quantity</option>
+            <option value="weight">Weight</option>
+            <option value="expirationDate">Expiration Date</option>
+            <option value="harvestDate">Harvest Date</option>
+            <option value="confirmed">Confirmed</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="newValue">New Value:</label>
+        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+</form>
+
+                            </td>
+                            <td> <!-- Delete button -->
+                                <form action="/pantry/deleteItem" method="POST">
                                     <input type="hidden" name="itemId" value="{{_id}}">
-                                    <div class="form-group">
-                                        <label for="fieldToUpdate">Select Field to Edit:</label>
-                                        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
-                                            <option value="donatorName">Donator Name</option>
-                                            <option value="itemType">Item Type</option>
-                                            <option value="itemName">Item Name</option>
-                                            <option value="itemQuantity">Item Quantity</option>
-                                            <option value="weight">Weight</option>
-                                            <option value="expirationDate">Expiration Date</option>
-                                            <option value="harvestDate">Harvest Date</option>
-                                            <option value="confirmed">Confirmed</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="newValue">New Value:</label>
-                                        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -76,6 +84,7 @@
                             <th>Harvest Date</th>
                             <th>Confirmed</th>
                             <th>Action</th>
+                            <th>Delete</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -91,27 +100,32 @@
                             <td>{{HarvestDate}}</td>
                             <td>{{confirmed}}</td>
                             <td>
-                                <form action="/updateInventory" method="POST">
+                                                           <form action="/pantry/updateInventory" method="POST">
+    <input type="hidden" name="itemId" value="{{_id}}">
+    <div class="form-group">
+        <label for="fieldToUpdate">Select Field to Edit:</label>
+        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
+            <option value="donatorName">Donator Name</option>
+            <option value="itemType">Item Type</option>
+            <option value="itemName">Item Name</option>
+            <option value="itemQuantity">Item Quantity</option>
+            <option value="weight">Weight</option>
+            <option value="expirationDate">Expiration Date</option>
+            <option value="harvestDate">Harvest Date</option>
+            <option value="confirmed">Confirmed</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="newValue">New Value:</label>
+        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+</form>
+                            </td>
+                            <td> <!-- Delete button -->
+                                <form action="/pantry/deleteItem" method="POST">
                                     <input type="hidden" name="itemId" value="{{_id}}">
-                                    <div class="form-group">
-                                        <label for="fieldToUpdate">Select Field to Edit:</label>
-                                        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
-                                            <option value="pantryLocation">Pantry Location</option>
-                                            <option value="donatorName">Donator Name</option>
-                                            <option value="itemType">Item Type</option>
-                                            <option value="itemName">Item Name</option>
-                                            <option value="itemQuantity">Item Quantity</option>
-                                            <option value="weight">Weight</option>
-                                            <option value="expirationDate">Expiration Date</option>
-                                            <option value="harvestDate">Harvest Date</option>
-                                            <option value="confirmed">Confirmed</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="newValue">New Value:</label>
-                                        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
                         </tr>

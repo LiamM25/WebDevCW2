@@ -10,7 +10,12 @@ router.get('/pantryHome', verify, checkUserSession, pantryController.showPantryH
 //Pantry inv
 router.get('/pantryInventory', verify, checkUserSession,  pantryController.showPantryInventory);
 
+//pantry Update
 router.post('/updateInventory', verify, checkUserSession, pantryController.updateInventory);
+
+//delete item
+router.post('/deleteItem', verify, checkUserSession, pantryController.deleteInventoryItem);
+
 
 
 module.exports = router;
