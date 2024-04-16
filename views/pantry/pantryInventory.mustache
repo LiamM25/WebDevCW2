@@ -17,8 +17,7 @@
                             <th>Expiration Date</th>
                             <th>Harvest Date</th>
                             <th>Confirmed</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,57 +30,31 @@
                             <td>{{Weight}}</td>
                             <td>{{ExpirationDate}}</td>
                             <td>{{HarvestDate}}</td>
+                            <td>{{confirmed}}</td>
                             <td>
-                                {{#confirmedEqualsYes}}
-                                    Yes
-                                {{/confirmedEqualsYes}}
-                                {{#confirmedEqualsNo}}
-                                    No
-                                {{/confirmedEqualsNo}}
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCurrentItemModal{{_id}}">
-                                    Edit
-                                </button>
-                            </td>
-                            <td>
-                                <form action="/pantry/deleteItem" method="POST">
+                                <form action="/updateInventory" method="POST">
                                     <input type="hidden" name="itemId" value="{{_id}}">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    <div class="form-group">
+                                        <label for="fieldToUpdate">Select Field to Edit:</label>
+                                        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
+                                            <option value="donatorName">Donator Name</option>
+                                            <option value="itemType">Item Type</option>
+                                            <option value="itemName">Item Name</option>
+                                            <option value="itemQuantity">Item Quantity</option>
+                                            <option value="weight">Weight</option>
+                                            <option value="expirationDate">Expiration Date</option>
+                                            <option value="harvestDate">Harvest Date</option>
+                                            <option value="confirmed">Confirmed</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newValue">New Value:</label>
+                                        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 </form>
                             </td>
                         </tr>
-                        <!-- Edit Modal for Current Inventory Items -->
-                        <div class="modal fade" id="editCurrentItemModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="editCurrentItemModal{{_id}}Label" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editCurrentItemModal{{_id}}Label">Edit Item</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Form for editing item details -->
-                                        <form id="editForm{{_id}}">
-                                            <div class="form-group">
-                                                <label for="editItemQuantity">Item Quantity:</label>
-                                                <input type="text" class="form-control" id="editItemQuantity" name="editItemQuantity" value="{{itemQuantity}}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="editWeight">Weight:</label>
-                                                <input type="text" class="form-control" id="editWeight" name="editWeight" value="{{Weight}}">
-                                            </div>
-                                            <!-- Add more input fields for other editable fields -->
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="submitEditForm('{{_id}}')">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         {{/currentPantryInventory}}
                     </tbody>
                 </table>
@@ -102,7 +75,7 @@
                             <th>Expiration Date</th>
                             <th>Harvest Date</th>
                             <th>Confirmed</th>
-                            <th>Edit</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,15 +91,30 @@
                             <td>{{HarvestDate}}</td>
                             <td>{{confirmed}}</td>
                             <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editOtherItemModal{{_id}}">
-                                    Edit
-                                </button>
+                                <form action="/updateInventory" method="POST">
+                                    <input type="hidden" name="itemId" value="{{_id}}">
+                                    <div class="form-group">
+                                        <label for="fieldToUpdate">Select Field to Edit:</label>
+                                        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
+                                            <option value="pantryLocation">Pantry Location</option>
+                                            <option value="donatorName">Donator Name</option>
+                                            <option value="itemType">Item Type</option>
+                                            <option value="itemName">Item Name</option>
+                                            <option value="itemQuantity">Item Quantity</option>
+                                            <option value="weight">Weight</option>
+                                            <option value="expirationDate">Expiration Date</option>
+                                            <option value="harvestDate">Harvest Date</option>
+                                            <option value="confirmed">Confirmed</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newValue">New Value:</label>
+                                        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                </form>
                             </td>
                         </tr>
-                        <!-- Edit Modal for Other Inventory Items -->
-                        <div class="modal fade" id="editOtherItemModal{{_id}}" tabindex="-1" role="dialog" aria-labelledby="editOtherItemModal{{_id}}Label" aria-hidden="true">
-                            <!-- Modal Content Here -->
-                        </div>
                         {{/otherPantryInventory}}
                     </tbody>
                 </table>
@@ -134,45 +122,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    function submitEditForm(itemId) {
-        // Get the updated values from the form fields
-        var itemQuantity = document.getElementById('editItemQuantity').value;
-        var weight = document.getElementById('editWeight').value;
-
-        // Create an object with the updated values
-        var updateFields = {
-            itemQuantity: itemQuantity,
-            Weight: weight
-            // Add more fields as needed
-        };
-
-        // Send the updated values to the server using an HTTP request (e.g., AJAX)
-        // Example using fetch API
-        fetch('/pantry/updateInventoryItem', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                itemId: itemId,
-                updateFields: updateFields
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update item');
-            }
-            // Reload the page or update the UI as needed
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle error
-        });
-    }
-</script>
 
 {{> sponsers}}
 {{> footer}}

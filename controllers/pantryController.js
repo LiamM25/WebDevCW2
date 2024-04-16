@@ -79,19 +79,22 @@ exports.showPantryInventory = function(req, res) {
 };
 
 // Handler for updating inventory item confirmation status
-exports.updateInventoryConfirmation = function(req, res) {
+exports.updateInventory = function(req, res) {
+    // Extract item ID and confirmation status from the request body
     const itemId = req.body.itemId;
     const confirmed = req.body.confirmed;
 
-    // Update the confirmation status in the inventory
-    InvDAO.updateInventoryItem(itemId, { confirmed: confirmed }, (err) => {
+    // Update fields object with the confirmation status
+    const updateFields = { confirmed: confirmed };
+
+    // Call the updateInventoryItem method from the inventoryModel
+    InventoryModel.updateInventoryItem(itemId, updateFields, (err) => {
         if (err) {
-            console.error("Error updating inventory item confirmation status:", err);
             // Handle error
-            res.status(500).send("Error updating inventory item confirmation status");
+            return res.status(500).json({ error: 'Failed to update inventory item confirmation status.' });
         } else {
-            console.log("confirmation status updated");
-            res.redirect('/pantry/pantryInventory');
+            // Send success response
+            return res.status(200).json({ message: 'Inventory item confirmation status updated successfully.' });
         }
     });
 };

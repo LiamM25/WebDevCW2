@@ -10,7 +10,7 @@ router.get('/pantryHome', verify, checkUserSession, pantryController.showPantryH
 //Pantry inv
 router.get('/pantryInventory', verify, checkUserSession,  pantryController.showPantryInventory);
 
-router.post('/updateConfirmed', verify, checkUserSession, pantryController.updateInventoryConfirmation);
+router.post('/updateInventory', verify, checkUserSession, pantryController.updateInventory);
 
 
 module.exports = router;
