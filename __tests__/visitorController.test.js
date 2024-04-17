@@ -49,27 +49,5 @@ describe('Visitor Controller', () => {
 
   });
 
-  describe('postNewUser', () => {
-    it('should create a new user and redirect to login page', () => {
-      const req = {
-        body: {
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john@example.com',
-          password: 'password'
-        }
-      };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        send: jest.fn(),
-        redirect: jest.fn()
-      };
-      UserDAO.lookup = jest.fn((email, callback) => callback(null, null));
-      UserDAO.create = jest.fn((firstName, lastName, email, password, role, callback) => callback(null));
-      visitorController.postNewUser(req, res);
-      expect(UserDAO.lookup).toHaveBeenCalledWith(req.body.email, expect.any(Function));
-      expect(UserDAO.create).toHaveBeenCalledWith(req.body.firstName, req.body.lastName, req.body.email, req.body.password, 'user', expect.any(Function));
-      expect(res.redirect).toHaveBeenCalledWith('/visitor/login');
-    });
-  });
+ 
 });

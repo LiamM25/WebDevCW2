@@ -37,7 +37,6 @@ class invDAO {
         return this;
     }
 
-
     createItem(userId, pantryLocation, itemType, itemName, itemQuantity, weight, expirationDate, harvestDate, confirmed, cb) {
         const entry = {
             userId: userId, 
@@ -123,7 +122,27 @@ class invDAO {
         });
     }
 
-
+    checkExpiration(cb) {
+        // Get today's date
+        const today = new Date();
+    
+        // Query for items with expiration dates before today's date
+        this.db.find({}, (err, allItems) => {
+            if (err) {
+                console.error("Error fetching all items:", err);
+                cb(err, null);
+            } else {
+                const expiredItems = allItems.filter(item => {
+                    // Convert expiration date to Date object
+                    const expirationDate = new Date(item.ExpirationDate);
+                    // Compare expiration date with today's date
+                    return expirationDate < today;
+                });
+                console.log("Successfully fetched expired items:", expiredItems);
+                cb(null, expiredItems);
+            }
+        });
+    }
 
 }
 

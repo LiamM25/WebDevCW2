@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 
 // Login method to handle user login
-exports.login = function (req, res, next) {
+exports.login = function (req, res, callback) {
   let email = req.body.email;
   let password = req.body.password;
 
@@ -30,7 +30,7 @@ exports.login = function (req, res, next) {
       if (err || !result) {
         // Incorrect password
         console.error("Incorrect password for user", email);
-        return res.status(403).render("visitor/login");
+        return res.status(403).render("visitor/login" , { errorMessage: "Failed to login. Username or password incorrect." });
       }
 
       console.log("Password correct for user:", email);
@@ -57,7 +57,7 @@ exports.login = function (req, res, next) {
       req.userRole = user.role;
       
       // Proceed to the next middleware
-      next();
+      callback(null);
     });
   });
 };
@@ -105,7 +105,6 @@ function verifyWithRole(req, res, next, role) {
     return res.status(401).send("Invalid access token");
   }
 }
-
 
 
 exports.verify = function (req, res, next) {

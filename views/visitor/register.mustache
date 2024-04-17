@@ -1,6 +1,12 @@
 {{> header }}
 {{> visitor/navbar}}
 
+{{#errorMessage}}
+<div id="errorMessage" class="alert alert-danger text-center" role="alert">
+    {{errorMessage}}
+</div>
+{{/errorMessage}}
+
 <div class="container my-5 d-flex justify-content-center align-items-center mt-5">
     <div class="row">
         <div class="col-md-8">

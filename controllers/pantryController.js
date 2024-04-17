@@ -19,67 +19,104 @@ exports.showPantryHome = function(req, res) {
     res.render("pantry/pantryHome", { user: user });
 };
 
-// Method to render the pantry inv
+// Fetch current pantry items
+async function fetchCurrentPantryItems(user) {
+    const pantryName = user.pantryName;
+    return new Promise((resolve, reject) => {
+        InvDAO.getAllInventory({ pantryLocation: pantryName }, (err, items) => {
+            if (err) {
+                console.error("Error fetching current pantry inventory:", err);
+                reject(err);
+            } else {
+                resolve(items);
+            }
+        });
+    });
+}
+
+
+
+// Fetch donator names for current pantry items
+async function fetchDonatorNames(items) {
+    for (const item of items) {
+        try {
+            const donatorName = await new Promise((resolve, reject) => {
+                UserDAO.getNameById(item.userId, (err, name) => {
+                    if (err) {
+                        console.error("Error fetching donator name:", err);
+                        reject(err);
+                    } else {
+                        resolve(name || "Unknown");
+                    }
+                });
+            });
+            item.donatorName = donatorName;
+        } catch (err) {
+            console.error("Error fetching donator name:", err);
+            item.donatorName = "Unknown";
+        }
+    }
+}
+
+// Fetch other pantry items
+async function fetchOtherPantryItems(pantryName) {
+    return new Promise((resolve, reject) => {
+        InvDAO.getAllInventory({ pantryLocation: { $ne: pantryName } }, (err, items) => {
+            if (err) {
+                console.error("Error fetching other pantry inventory:", err);
+                reject(err);
+            } else {
+                resolve(items);
+            }
+        });
+    });
+}
+
+// Method to fetch expired items
+async function fetchExpiredItems() {
+    return new Promise((resolve, reject) => {
+        // Get today's date
+        const today = new Date();
+        
+        // Query for items with expiration dates before today's date
+        InvDAO.checkExpiration((err, expiredItems) => {
+            if (err) {
+                console.error("Error fetching expired items:", err);
+                reject(err);
+            } else {
+                resolve(expiredItems);
+            }
+        });
+    });
+}
+
+
+// Method to render the pantry inventory
 exports.showPantryInventory = async function(req, res) {
     try {
         const user = req.user;
 
         // Check if the user object exists and has the pantryName property
         if (user && user.pantryName) {
-            const pantryName = user.pantryName; // Retrieve pantry name from the user object
+            // Fetch current pantry items
+            const currentPantryItems = await fetchCurrentPantryItems(user);
 
-            // Fetch inventory items associated with the current pantry
-            const currentPantryItems = await new Promise((resolve, reject) => {
-                InvDAO.getAllInventory({ pantryLocation: pantryName }, (err, currentPantryItems) => {
-                    if (err) {
-                        console.error("Error fetching current pantry inventory:", err);
-                        reject(err);
-                    } else {
-                        resolve(currentPantryItems);
-                    }
-                });
-            });
+            // Fetch expired items
+            const expiredItems = await fetchExpiredItems();
 
-            // Fetch donator names for each item
-            for (const item of currentPantryItems) {
-                try {
-                    const donatorName = await new Promise((resolve, reject) => {
-                        UserDAO.getNameById(item.userId, (err, donatorName) => {
-                            if (err) {
-                                console.error("Error fetching donator name:", err);
-                                reject(err);
-                            } else {
-                                // Check if the donator name is found
-                                if (donatorName) {
-                                    resolve(donatorName);
-                                } else {
-                                    // Set a default value for the donator's name
-                                    resolve("Unknown");
-                                }
-                            }
-                        });
-                    });
-                    item.donatorName = donatorName;
-                } catch (err) {
-                    console.error("Error fetching donator name:", err);
-                    item.donatorName = "Unknown";
-                }
-            }
+            // Fetch donator names for current pantry items
+            await fetchDonatorNames(currentPantryItems);
 
-            // Fetch inventory items associated with other pantries
-            const otherPantryItems = await new Promise((resolve, reject) => {
-                InvDAO.getAllInventory({ pantryLocation: { $ne: pantryName } }, (err, otherPantryItems) => {
-                    if (err) {
-                        console.error("Error fetching other pantry inventory:", err);
-                        reject(err);
-                    } else {
-                        resolve(otherPantryItems);
-                    }
-                });
-            });
+            // Fetch other pantry items
+            const otherPantryItems = await fetchOtherPantryItems(user.pantryName);
 
             // Render the pantry inventory page with inventory data
-            res.render("pantry/pantryInventory", { user: user, currentPantryInventory: currentPantryItems, otherPantryInventory: otherPantryItems });
+            res.render("pantry/pantryInventory", { 
+                user, 
+                currentPantryInventory: currentPantryItems, 
+                otherPantryInventory: otherPantryItems,
+                expiredItems: expiredItems
+            });
         } else {
             console.error("User session expired or invalid");
             res.redirect('/');
@@ -89,7 +126,6 @@ exports.showPantryInventory = async function(req, res) {
         res.status(500).send("Error fetching inventory");
     }
 };
-
 
 // Handler for updating inventory item fields
 exports.updateInventory = function(req, res) {

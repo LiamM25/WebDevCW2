@@ -24,7 +24,9 @@ exports.postLogin = function (req, res) {
         if (err) {
             // Handle login error
             console.error("Error logging in:", err);
-            return res.status(500).send("Internal server error");
+              // Render the login page with an error message
+              res.render("visitor/login");
+              return;
         }
                 
         // Redirect based on user's role
@@ -50,16 +52,23 @@ exports.postNewUser = function (req, res) {
     const lastName = req.body.lastName;
     const email = req.body.email;
     const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
     const role = 'user';
 
     if (!firstName || !lastName || !email || !password) {
         res.status(401).send("Missing required fields");
         return;
     }
+
+    if (password !== confirmPassword) {
+        console.log("Password fields do not match.")
+        return res.status(403).render("visitor/register" , { errorMessage: "Password fields do not match." });
+        
+    }
     UserDAO.lookup(email, function (_err, u) {
         if (u) {
-            res.status(401).send("User exists: " + email);
-            return;
+            console.log("Attempt to create user with existing email.")
+            return res.status(403).render("visitor/register" , { errorMessage: "Email already exists. Try again with a different email." });
         }
         UserDAO.create(firstName, lastName, email, password, role, function (err) {
             if (err) {

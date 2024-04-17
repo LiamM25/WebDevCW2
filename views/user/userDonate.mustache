@@ -1,6 +1,14 @@
 {{> header }}
 {{> user/userNav }}
 
+<!-- Check if a success message exists -->
+{{#successMessage}}
+<div id="successMessage" class= "alert alert-success text-center" role="alert">
+    {{successMessage}}
+</div>
+{{/successMessage}}
+
+
 <div class="container my-5 d-flex justify-content-center align-items-center mt-5">
     <div class="row">
         <div class="col-md-8">
@@ -96,4 +104,18 @@
             harvestDateWrapper.style.display = "none";
         }
     }
+
+    
+    function hideSuccessMessage() {
+    var successMessage = document.getElementById('successMessage');
+
+    if (successMessage) {
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+        }, 3000); 
+    }
+}
+
+
+window.onload = hideSuccessMessage;
 </script>

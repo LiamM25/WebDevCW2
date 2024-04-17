@@ -1,7 +1,6 @@
-const UserDAO = require("../models/userModel");
 const InvDAO = require("../models/inventoryModel");
 const auth = require("../authentication/auth.js");
-const async = require('async'); 
+
 
 exports.checkUserSession = function(req, res, next) {
     const user = req.user;
@@ -63,7 +62,7 @@ exports.newDonation = function(req, res, next) {
             res.status(500).send("Error creating donation");
         } else {
             console.log("New donation created:", newDonation);
-            res.render("user/userDonate", { user: user });
+            res.render("user/userDonate", { user: user, successMessage: "Donation successful. Thank you!" });
         }
     });
 };
