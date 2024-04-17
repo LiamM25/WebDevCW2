@@ -17,7 +17,7 @@ class UserDAO {
             firstName: 'John',
             lastName: 'Doe',
             email: 'johndoe8@email.com',
-            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            password: '$2a$10$6aiT/sx8h04/CFYuvxiNe.zYkDClpEnJFm.BkpbD64PoDGFnUHsUG', //userPassword
             role: 'user'
         });
 
@@ -26,16 +26,16 @@ class UserDAO {
             firstName: 'Admin',
             lastName: 'Admin',
             email: 'admin@email.com',
-            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            password: '$2a$10$.6qTj5SiuU1GqKzEH613l.kK81JwZJW65DPSr2sBysya90Uqn9AAq', //adminPassword
             role: 'admin'
         });
 
          //pantry
          this.db.insert({
-            firstName: 'Pantry1',
+            firstName: 'Pantry',
             lastName: 'Admin',
             email: 'pantry@email.com',
-            password: '$2b$10$I82WRFuGghOMjtu3LLZW9OAMrmYOlMZjEEkh.vx.K2MM05iu5hY2C',
+            password: '$2a$10$JQ4p2si03ui.EpwKQ223zOvVTQ2ystm0n/sSpN1KhzBpUxuqpq06e', //pantryPassword
             role: 'pantry',
             pantryName: 'Parkhead School House'
         });
