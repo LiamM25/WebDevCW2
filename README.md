@@ -23,12 +23,12 @@ Email: johndoe8@email.com
 
 Password: userPassword
 
-## Pantry
+### Pantry
 Email: pantry@email.com
 
 Password: pantryPassword
 
-## Admin
+### Admin
 Email: admin@email.com
 
 Password: adminPassword
