@@ -1,0 +1,84 @@
+{{> header }}
+{{> admin/adminNav}}
+
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="registration-content">
+                <h2 class="text-center mb-4">Create Privileged Account</h2>
+                <form action="/admin/adminCreateUser" method="POST">
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="pantry">Pantry</option>
+                        </select>
+                    </div>
+                    <!-- Pantry name field (hidden by default) -->
+                    <div id="pantryNameField" style="display: none;" class="form-group">
+                        <label for="pantryName">Pantry Name:</label>
+                        <select id="pantryName" name="pantryName" class="form-control">
+                            <option value="Parkhead School House">Parkhead School House</option>
+                            <option value="Ruchazie Pantry">Ruchazie Pantry</option>
+                            <option value="North West Community Pantry">North West Community Pantry</option>
+                            <option value="Govan Pantry">Govan Pantry</option>
+                            <option value="Shettleston Pop-Up Pantry">Shettleston Pop-Up Pantry</option>
+                            <option value="Croy Pantry">Croy Pantry</option>
+                            <option value="Castlemilk Pantry">Castlemilk Pantry</option>
+                            <option value="Kilsyth Pantry ">Kilsyth Pantry </option>
+                            <option value="Courtyard Pantry">Courtyard Pantry</option>
+                            <option value="Greenock Pantry">Greenock Pantry</option>
+                            <option value="Port Glasgow Pantry">Port Glasgow Pantry</option>
+                            <option value="Govanhill Pantry">Govanhill Pantry</option>
+                            <option value="Linkes Pantry">Linkes Pantry</option>
+                            <option value="Ayr Pantry">Ayr Pantry</option>
+                            <option value="Pollok Pantry">Pollok Pantry</option>
+                            <option value="Whiteinch Pantry">Whiteinch Pantry</option>
+                            <option value="Falkirk Pantry (First Step Food Falkirk)">Falkirk Pantry (First Step Food Falkirk)</option>
+                            <option value="The Larder West Lothian">The Larder West Lothian</option>
+                            <option value="Food Facts Friends">Food Facts Friends</option>
+                            <option value="Carbrain Pantry">Carbrain Pantry</option>
+                            <option value="Croftpark Pantry">Croftpark Pantry</option>
+                            
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to show/hide pantry name field
+    document.getElementById("role").addEventListener("change", function() {
+        var role = this.value;
+        var pantryNameField = document.getElementById("pantryNameField");
+
+        
+        if (role === "pantry") {
+            pantryNameField.style.display = "block";
+        } else {
+            pantryNameField.style.display = "none";
+        }
+    });
+</script>
+
+{{> sponsers}}
+{{> footer}}

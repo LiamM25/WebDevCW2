@@ -1,0 +1,143 @@
+{{> header }}
+{{> admin/adminNav}}
+
+<div class="container my-5">
+  <h1 class="text-center mb-4">Inventory</h1>
+
+  <!-- Filter controls -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="pantryLocationFilter">Pantry Location:</label>
+      <select id="pantryLocationFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Parkhead School House">Parkhead School House</option>
+        <option value="Ruchazie Pantry">Ruchazie Pantry</option>
+        <option value="North West Community Pantry">North West Community Pantry</option>
+        <option value="Govan Pantry">Govan Pantry</option>
+        <option value="Shettleston Pop-Up Pantry">Shettleston Pop-Up Pantry</option>
+        <option value="Croy Pantry">Croy Pantry</option>
+        <option value="Castlemilk Pantry">Castlemilk Pantry</option>
+        <option value="Kilsyth Pantry ">Kilsyth Pantry </option>
+        <option value="Courtyard Pantry">Courtyard Pantry</option>
+        <option value="Greenock Pantry">Greenock Pantry</option>
+        <option value="Port Glasgow Pantry">Port Glasgow Pantry</option>
+        <option value="Govanhill Pantry">Govanhill Pantry</option>
+        <option value="Linkes Pantry">Linkes Pantry</option>
+        <option value="Ayr Pantry">Ayr Pantry</option>
+        <option value="Pollok Pantry">Pollok Pantry</option>
+        <option value="Whiteinch Pantry">Whiteinch Pantry</option>
+        <option value="Falkirk Pantry (First Step Food Falkirk)">Falkirk Pantry (First Step Food Falkirk)</option>
+        <option value="The Larder West Lothian">The Larder West Lothian</option>
+        <option value="Food Facts Friends">Food Facts Friends</option>
+        <option value="Carbrain Pantry">Carbrain Pantry</option>
+        <option value="Croftpark Pantry">Croftpark Pantry</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label for="itemTypeFilter">Item Type:</label>
+      <select id="itemTypeFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Fruit/Veg">Fruit/Veg</option>
+        <option value="Canned Goods">Canned Goods</option>
+        <option value="Meat/Poultry">Meat/Poultry</option>
+        <option value="Fish">Fish</option>
+        <option value="Grains">Grains</option>
+        <option value="Milk Products">Milk Products</option>
+        <option value="Other">Other</option>
+        
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label for="confirmedOrderFilter">Confirmed Inventory:</label>
+      <select id="confirmedOrderFilter" class="form-control" onchange="filterInventory()">
+        <option value="">All</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        
+      </select>
+    </div>
+  </div>
+
+  <!-- Button to reset filters -->
+  <div class="text-center mb-4">
+    <button onclick="resetFilters()" class="btn btn-secondary">Reset Filters</button>
+  </div>
+
+  <!-- Inventory table -->
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Pantry Location</th>
+          <th>Item Type</th>
+          <th>Item Name</th>
+          <th>Item Quantity</th>
+          <th>Weight</th>
+          <th>Expiration Date</th>
+          <th>Harvest Date</th>
+          <th>Confirmed</th>
+          <th>Donator Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#inventory}}
+        <tr>
+          <td>{{pantryLocation}}</td>
+          <td>{{itemType}}</td>
+          <td>{{itemName}}</td>
+          <td>{{itemQuantity}}</td>
+          <td>{{Weight}}</td>
+          <td>{{ExpirationDate}}</td>
+          <td>{{HarvestDate}}</td>
+          <td>{{confirmed}}</td>
+          <td>{{donatorName}}</td>
+          <td>
+            <form action="/admin/deleteInvItem" method="POST">
+              <input type="hidden" name="itemId" value="{{_id}}">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{/inventory}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // function to filter inventory
+  function filterInventory() {
+    // Get selected filter options
+    const pantryLocation = document.getElementById("pantryLocationFilter").value;
+    const itemType = document.getElementById("itemTypeFilter").value;
+    const confirmed = document.getElementById("confirmedOrderFilter").value;
+
+    const queryParams = new URLSearchParams();
+    if (pantryLocation) {
+      queryParams.append('pantryLocation', pantryLocation);
+    }
+    if (itemType) {
+      queryParams.append('itemType', itemType);
+    }
+    if (confirmed) {
+      queryParams.append('confirmed', confirmed);
+    }
+
+    const url = '/admin/adminInventory?' + queryParams.toString();
+
+    // Redirect to filtered inventory page
+    window.location.href = url;
+  }
+
+  function resetFilters() {
+    document.getElementById("pantryLocationFilter").value = "";
+    document.getElementById("itemTypeFilter").value = "";
+    document.getElementById("confirmedOrderFilter").value = "";
+
+    location.reload();
+  }
+</script>
+
+{{> sponsers}}
+{{> footer }}

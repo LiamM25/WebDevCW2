@@ -1,0 +1,121 @@
+{{> header }}
+{{> user/userNav }}
+
+<!-- Check if a success message exists -->
+{{#successMessage}}
+<div id="successMessage" class= "alert alert-success text-center" role="alert">
+    {{successMessage}}
+</div>
+{{/successMessage}}
+
+
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Column for the logo image -->
+            <div class="d-flex justify-content-center text-center">
+                <img src="/images/TSPN_logo enhanced.png" alt="TSPN Logo" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="registration-content">
+                <h2 class="text-center mb-4">Make a Donation</h2>
+                <form id="donationForm" action="/user/newDonation" method="POST" class="text-center">
+                    <div class="form-group">
+                        <label for="itemType">Item Type</label>
+                        <select name="itemType" class="form-control" required onchange="toggleHarvestDate(this)">
+                            <option value="Canned Goods" selected>Canned Goods</option>
+                            <option value="Fruit/Veg">Fruit/Veg</option>
+                            <option value="Meat/Poultry">Meat/Poultry</option>
+                            <option value="Fish">Fish</option>
+                            <option value="Grains">Grains</option>
+                            <option value="Milk Products">Milk Products</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group harvestDateWrapper" style="display: none;">
+                        <label for="harvestDate">Harvest Date</label>
+                        <input type="date" name="harvestDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemName">Name</label>
+                        <input type="text" name="itemName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemQuantity">Quantity</label>
+                        <input type="number" name="itemQuantity" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight</label>
+                        <input type="text" name="weight" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="expirationDate">Expiration Date</label>
+                        <input type="date" name="expirationDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pantryLocation">Pantry Location</label>
+                        <select name="pantryLocation" class="form-control" required>
+                            <option value="Parkhead School House">Parkhead School House</option>
+                            <option value="Ruchazie Pantry">Ruchazie Pantry</option>
+                            <option value="North West Community Pantry">North West Community Pantry</option>
+                            <option value="Govan Pantry">Govan Pantry</option>
+                            <option value="Shettleston Pop-Up Pantry">Shettleston Pop-Up Pantry</option>
+                            <option value="Croy Pantry">Croy Pantry</option>
+                            <option value="Castlemilk Pantry">Castlemilk Pantry</option>
+                            <option value="Kilsyth Pantry ">Kilsyth Pantry </option>
+                            <option value="Courtyard Pantry">Courtyard Pantry</option>
+                            <option value="Greenock Pantry">Greenock Pantry</option>
+                            <option value="Port Glasgow Pantry">Port Glasgow Pantry</option>
+                            <option value="Govanhill Pantry">Govanhill Pantry</option>
+                            <option value="Linkes Pantry">Linkes Pantry</option>
+                            <option value="Ayr Pantry">Ayr Pantry</option>
+                            <option value="Pollok Pantry">Pollok Pantry</option>
+                            <option value="Whiteinch Pantry">Whiteinch Pantry</option>
+                            <option value="Falkirk Pantry (First Step Food Falkirk)">Falkirk Pantry (First Step Food Falkirk)</option>
+                            <option value="The Larder West Lothian">The Larder West Lothian</option>
+                            <option value="Food Facts Friends">Food Facts Friends</option>
+                            <option value="Carbrain Pantry">Carbrain Pantry</option>
+                            <option value="Croftpark Pantry">Croftpark Pantry</option>
+                            
+                           
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Donate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> sponsers }}
+{{> footer }}
+
+<script>
+    function toggleHarvestDate(selectElement) {
+        const selectedItemType = selectElement.value;
+        const itemSection = selectElement.closest('.registration-content');
+        const harvestDateWrapper = itemSection.querySelector('.harvestDateWrapper');
+        
+        if (selectedItemType === "Fruit/Veg") {
+            harvestDateWrapper.style.display = "block";
+        } else {
+            harvestDateWrapper.style.display = "none";
+        }
+    }
+
+    
+    function hideSuccessMessage() {
+    var successMessage = document.getElementById('successMessage');
+
+    if (successMessage) {
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+        }, 3000); 
+    }
+}
+
+
+window.onload = hideSuccessMessage;
+</script>

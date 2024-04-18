@@ -1,0 +1,71 @@
+<div class="container my-5 d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Other Pantry Inventory</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Pantry Location</th>
+                            <th>Donator Name</th>
+                            <th>Item Type</th>
+                            <th>Item Name</th>
+                            <th>Item Quantity</th>
+                            <th>Weight</th>
+                            <th>Expiration Date</th>
+                            <th>Harvest Date</th>
+                            <th>Confirmed</th>
+                            <th>Update Info</th>
+                            <th>Delete</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#otherPantryInventory}}
+                        <tr>
+                            <td>{{pantryLocation}}</td>
+                            <td>{{donatorName}}</td>
+                            <td>{{itemType}}</td>
+                            <td>{{itemName}}</td>
+                            <td>{{itemQuantity}}</td>
+                            <td>{{Weight}}</td>
+                            <td>{{ExpirationDate}}</td>
+                            <td>{{HarvestDate}}</td>
+                            <td>{{confirmed}}</td>
+                            <td>
+                                <form action="/pantry/updateInventory" method="POST">
+                                    <input type="hidden" name="itemId" value="{{_id}}">
+                                    <div class="form-group">
+                                        <label for="fieldToUpdate">Select Field to Edit:</label>
+                                        <select class="form-control" id="fieldToUpdate" name="fieldToUpdate">
+                                            <option value="pantryLocation">Pantry Location</option>
+                                            <option value="donatorName">Donator Name</option>
+                                            <option value="itemType">Item Type</option>
+                                            <option value="itemName">Item Name</option>
+                                            <option value="itemQuantity">Item Quantity</option>
+                                            <option value="weight">Weight</option>
+                                            <option value="expirationDate">Expiration Date</option>
+                                            <option value="harvestDate">Harvest Date</option>
+                                            <option value="confirmed">Confirmed</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newValue">New Value:</label>
+                                        <input type="text" name="newValue" class="form-control" id="newValue" placeholder="New Value">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/pantry/deleteItem" method="POST">
+                                    <input type="hidden" name="itemId" value="{{_id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/otherPantryInventory}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
