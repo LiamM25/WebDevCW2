@@ -12,6 +12,7 @@ class invDAO {
     init() {
         
         this.db.insert({
+            userId: '6vgjnwQ5qF9FRvIu',
             pantryLocation: 'Parkhead School House',
             itemType: 'Fruit/Veg',
             itemName: 'Carrots',
@@ -23,6 +24,7 @@ class invDAO {
         });
 
         this.db.insert({
+            userId: '6vgjnwQ5qF9FRvIu',
             pantryLocation: 'Ruchazie Pantry',
             itemType: 'Canned Goods',
             itemName: 'Soup',

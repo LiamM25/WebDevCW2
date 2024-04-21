@@ -14,6 +14,7 @@ class UserDAO {
     init() {
         //user
         this.db.insert({
+            _id: '6vgjnwQ5qF9FRvIu',
             firstName: 'John',
             lastName: 'Doe',
             email: 'johndoe8@email.com',
