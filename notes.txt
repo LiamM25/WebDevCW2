@@ -22,5 +22,3 @@ Food Facts Friends
 Carbrain Pantry 
 Croftpark Pantry 
 
-TODO
-display donators name in pantry inventory.
